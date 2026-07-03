@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kr.IArt — Uma música feita só pra quem você ama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,500&family=Caveat:wght@600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5ECD9;
+    --paper-2:#EEE1C4;
+    --paper-3:#E8DAB9;
+    --ink:#1A1208;
+    --ink-soft:#4A3F2E;
+    --red:#C8432B;
+    --red-dark:#A5341F;
+    --gold:#B9853B;
+    --line:rgba(26,18,8,0.18);
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Manrope',sans-serif;
+    font-size:17px;
+    font-weight:600;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.02em;}
+  p{font-weight:600;color:var(--ink-soft);}
+  .hand{font-family:'Caveat',cursive;font-weight:700;}
+  a{color:inherit;}
+  img,video{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px;}
+
+  .deco{position:absolute;pointer-events:none;z-index:0;}
+  .deco svg{display:block;}
+
+  /* ─── NAV ─── */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,236,217,0.95);backdrop-filter:blur(10px);
+    border-bottom:2px solid var(--ink);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;}
+  .logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;letter-spacing:-0.02em;position:relative;}
+  .logo em{color:var(--red);font-style:normal;}
+  .logo-heart{position:absolute;top:-6px;right:-18px;font-size:0.65rem;color:var(--red);animation:heartbeat 1.8s ease-in-out infinite;}
+  @keyframes heartbeat{0%,100%{transform:scale(1);}50%{transform:scale(1.35);}}
+  .nav-cta{
+    background:var(--red);color:var(--paper);padding:10px 22px;
+    border:2px solid var(--ink);border-radius:8px;font-weight:800;font-size:0.88rem;
+    text-decoration:none;transition:background .15s;
+  }
+  .nav-cta:hover{background:var(--red-dark);}
+
+  /* ─── HERO ─── */
+  .hero{padding:72px 0 64px;position:relative;overflow:hidden;border-bottom:2px solid var(--ink);}
+  .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;}
+  .hero-deco-1{top:20px;right:-40px;opacity:0.15;}
+  .hero-deco-2{bottom:30px;left:-30px;opacity:0.1;}
+  .hero-deco-3{top:50%;right:5%;opacity:0.08;transform:translateY(-50%);}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;
+    font-size:0.76rem;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--red-dark);font-weight:800;
+  }
+  .hero h1{font-size:clamp(2.2rem,4.2vw,3.4rem);line-height:1.08;margin-bottom:22px;color:var(--ink);}
+  .hero h1 em{font-style:italic;color:var(--red-dark);}
+  .hero .lede{font-size:1.08rem;font-weight:600;color:var(--ink-soft);margin-bottom:32px;max-width:46ch;}
+  .hero-ctas{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+  .btn-primary{
+    background:var(--red);color:var(--paper);padding:15px 30px;
+    border:2px solid var(--ink);border-radius:8px;font-weight:800;font-size:1rem;
+    text-decoration:none;box-shadow:4px 4px 0 var(--ink);
+    transition:transform .14s,box-shadow .14s;display:inline-block;
+  }
+  .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);}
+  .price-hint{font-size:0.9rem;font-weight:700;color:var(--ink-soft);}
+  .price-hint strong{color:var(--red-dark);font-size:1.12rem;}
+  .trust-pills{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{
+    font-size:0.78rem;font-weight:700;padding:7px 13px;
+    border:2px solid var(--ink);border-radius:20px;
+    background:transparent;color:var(--ink);
+  }
+
+  /* VINYL */
+  .vinyl-wrap{position:relative;display:flex;justify-content:center;align-items:center;}
+  .v-deco-1{position:absolute;top:-28px;right:-20px;z-index:0;opacity:0.55;animation:floatA 4s ease-in-out infinite;}
+  .v-deco-2{position:absolute;bottom:-22px;left:-18px;z-index:0;opacity:0.45;animation:floatB 5s ease-in-out infinite;}
+  .v-deco-3{position:absolute;top:40%;left:-32px;z-index:0;opacity:0.35;}
+  @keyframes floatA{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  @keyframes floatB{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-6px) rotate(8deg);}}
+
+  .vinyl-card{
+    border:2px solid var(--ink);background:var(--paper-2);
+    box-shadow:8px 8px 0 var(--ink);width:100%;max-width:380px;
+    border-radius:6px;overflow:hidden;position:relative;z-index:1;
+  }
+  .vc-top{background:var(--ink);color:var(--paper);padding:20px 24px 18px;display:flex;align-items:center;gap:16px;}
+  .vinyl-disc{
+    width:72px;height:72px;border-radius:50%;flex-shrink:0;position:relative;
+    background:repeating-radial-gradient(circle,#1a1410 0,#1a1410 6px,#2c2218 7px,#1a1410 8px);
+    border:3px solid rgba(255,255,255,0.07);animation:spin 8s linear infinite;
+  }
+  .vinyl-disc::after{
+    content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:20px;height:20px;border-radius:50%;
+    background:radial-gradient(circle,var(--red) 0%,var(--red-dark) 100%);
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .vc-meta .song-name{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:500;line-height:1.2;margin-bottom:4px;}
+  .vc-meta .for-who{font-size:0.78rem;opacity:0.65;font-weight:600;}
+  .vc-waveform{padding:16px 24px 12px;}
+  .wave-bars{display:flex;align-items:center;gap:3px;height:44px;}
+  .wave-bars span{flex:1;border-radius:1px;display:block;animation:wavePulse 1.4s ease-in-out infinite;}
+  .wave-bars span.dark{background:var(--ink);}
+  .wave-bars span.red{background:var(--red);}
+  @keyframes wavePulse{0%,100%{opacity:.2;transform:scaleY(.3);}50%{opacity:1;transform:scaleY(1);}}
+  .wave-bars span:nth-child(odd){animation-delay:.15s;}
+  .wave-bars span:nth-child(3n){animation-delay:.3s;}
+  .wave-bars span:nth-child(4n){animation-delay:.45s;}
+  .vc-controls{display:flex;align-items:center;justify-content:space-between;padding:4px 24px 18px;}
+  .play-btn{
+    width:44px;height:44px;border-radius:50%;background:var(--red);border:2px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;color:var(--paper);font-size:1rem;cursor:pointer;box-shadow:2px 2px 0 var(--ink);
+  }
+  .time{font-size:0.78rem;color:var(--ink-soft);font-weight:700;}
+  .vc-label{padding:14px 24px;border-top:1.5px solid var(--line);}
+  .vc-label .hand{font-size:1.1rem;color:var(--red-dark);}
+  .vc-label .sub{font-size:0.73rem;color:var(--ink-soft);margin-top:2px;font-weight:600;}
+
+  /* ─── HOW ─── */
+  .how{padding:88px 0;position:relative;overflow:hidden;border-bottom:2px solid var(--ink);}
+  .how-deco-1{top:20px;left:0;opacity:0.07;}
+  .how-deco-2{bottom:20px;right:0;opacity:0.07;}
+  .sec-head{max-width:580px;margin-bottom:52px;position:relative;z-index:1;}
+  .sec-head h2{font-size:clamp(1.7rem,3vw,2.3rem);}
+  .sec-head p{color:var(--ink-soft);margin-top:12px;font-size:1rem;font-weight:600;}
+  .steps-list{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border:2px solid var(--ink);position:relative;z-index:1;}
+  .step-box{
+    padding:32px 26px;background:var(--paper);
+    border-right:1.5px solid var(--ink);position:relative;overflow:hidden;
+  }
+  .step-box:last-child{border-right:none;}
+  .step-num{font-family:'Fraunces',serif;font-size:3rem;font-weight:300;line-height:1;color:var(--paper-3);position:absolute;top:16px;right:20px;}
+  .step-box h3{font-size:1.05rem;margin-bottom:8px;font-weight:700;position:relative;z-index:1;color:var(--ink);}
+  .step-box p{font-size:0.9rem;color:var(--ink-soft);position:relative;z-index:1;font-weight:600;}
+  .step-tag{display:inline-block;margin-top:14px;font-size:0.73rem;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:var(--red-dark);position:relative;z-index:1;}
+  .step-shape{position:absolute;bottom:-10px;left:-10px;opacity:0.07;z-index:0;}
+
+  /* ─── FORM ─── */
+  .formsec{padding:96px 0;background:var(--paper-2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);position:relative;overflow:hidden;}
+  .formsec-deco-1{top:30px;right:30px;opacity:0.09;}
+  .formsec-deco-2{bottom:30px;left:20px;opacity:0.07;}
+  .form-layout{display:grid;grid-template-columns:0.9fr 1.1fr;border:2px solid var(--ink);box-shadow:7px 7px 0 var(--ink-soft);background:var(--paper);border-radius:6px;overflow:hidden;position:relative;z-index:1;}
+  .form-info{padding:44px 38px;border-right:2px dashed var(--ink);}
+  .form-info h2{font-size:1.6rem;margin-bottom:14px;color:var(--ink);}
+  .form-info>p{color:var(--ink-soft);font-size:0.96rem;margin-bottom:24px;}
+  .side-list{list-style:none;}
+  .side-list li{font-size:0.9rem;font-weight:600;color:var(--ink-soft);padding:10px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px;}
+  .side-list li:last-child{border-bottom:none;}
+  .side-list .ico{color:var(--red-dark);font-weight:800;flex-shrink:0;}
+  .form-body{padding:38px;}
+
+  /* wizard progress */
+  .progress-wrap{display:flex;gap:5px;margin-bottom:10px;}
+  .prog-seg{flex:1;height:5px;background:var(--paper-3);border:1px solid var(--ink);border-radius:3px;}
+  .prog-seg.done{background:var(--red);}
+  .step-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
+  .step-tag-label{font-size:0.75rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--red-dark);}
+  .step-counter{font-size:0.78rem;font-weight:700;color:var(--ink-soft);}
+
+  .wizard-step{display:none;}
+  .wizard-step.active{display:block;}
+
+  .field-g{margin-bottom:20px;}
+  .field-g:last-child{margin-bottom:0;}
+  .f-label{
+    font-size:0.8rem;font-weight:800;text-transform:uppercase;
+    letter-spacing:0.03em;color:var(--ink);margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .f-label .req{
+    font-size:0.68rem;font-weight:700;text-transform:none;
+    color:var(--red-dark);background:rgba(200,67,43,0.1);
+    padding:3px 8px;border-radius:20px;
+  }
+  .f-hint{font-size:0.78rem;font-weight:600;color:var(--ink-soft);margin-bottom:8px;}
+  .f-mock{
+    background:var(--paper);border:2px solid var(--line);
+    border-radius:8px;padding:12px 16px;
+    font-size:0.9rem;font-weight:600;color:var(--ink-soft);
+  }
+  .f-textarea{
+    background:var(--paper);border:2px solid var(--line);
+    border-radius:8px;padding:12px 16px;
+    font-size:0.9rem;font-weight:600;color:var(--ink-soft);
+    min-height:80px;width:100%;display:block;resize:vertical;
+  }
+
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    background:var(--paper);border:2px solid var(--ink);
+    padding:8px 14px;border-radius:24px;
+    font-size:0.83rem;font-weight:700;
+    cursor:pointer;color:var(--ink);user-select:none;
+    transition:background .12s,color .12s,border-color .12s;
+  }
+  .chip:hover{background:var(--paper-3);}
+  .chip.on{background:var(--red);color:var(--paper);border-color:var(--red);}
+
+  /* wizard nav */
+  .wz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:30px;gap:10px;}
+  .wz-btn{
+    padding:12px 24px;border:2px solid var(--ink);border-radius:8px;
+    font-weight:800;font-size:0.92rem;cursor:pointer;
+    background:var(--paper);color:var(--ink);transition:background .14s,color .14s;
+  }
+  .wz-btn.next{background:var(--ink);color:var(--paper);margin-left:auto;}
+  .wz-btn.next:hover{background:var(--red);border-color:var(--red);}
+  .wz-btn.back{visibility:hidden;}
+  .wz-btn.back.show{visibility:visible;}
+
+  /* step summary box */
+  .summary-box{
+    background:var(--paper-3);border:2px solid var(--ink);border-radius:8px;
+    padding:16px;font-size:0.87rem;font-weight:700;color:var(--ink);
+  }
+  .summary-box .s-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);}
+  .summary-box .s-row:last-child{border-bottom:none;}
+  .summary-box .s-key{color:var(--ink-soft);font-weight:600;}
+
+  /* ─── UPSELL ─── */
+  .upsell{padding:88px 0;background:var(--ink);color:var(--paper);position:relative;overflow:hidden;}
+  .upsell-deco-1{top:30px;right:60px;opacity:0.07;}
+  .upsell-deco-2{bottom:20px;left:40px;opacity:0.09;}
+  .upsell-deco-3{top:50%;left:55%;opacity:0.04;transform:translateY(-50%);}
+  .upsell-inner{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;position:relative;z-index:1;}
+  .upsell-eye{font-size:0.74rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .upsell-eye::before{content:'';width:20px;height:1.5px;background:var(--gold);}
+  .upsell h2{font-size:clamp(1.6rem,3vw,2.3rem);color:var(--paper);margin-bottom:16px;}
+  .upsell h2 em{font-style:italic;color:var(--gold);}
+  .upsell>div>p,.upsell-inner p{color:rgba(245,236,217,0.75);font-size:1rem;font-weight:600;margin-bottom:28px;max-width:44ch;}
+  .upsell-list{list-style:none;margin-bottom:28px;}
+  .upsell-list li{font-size:0.9rem;font-weight:600;color:rgba(245,236,217,0.82);padding:9px 0;border-bottom:1px solid rgba(245,236,217,0.1);display:flex;gap:10px;}
+  .upsell-list li:last-child{border-bottom:none;}
+  .chk{color:var(--gold);font-weight:800;}
+  .upsell-price-row{display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
+  .u-old{font-size:0.94rem;text-decoration:line-through;color:rgba(245,236,217,0.38);}
+  .u-new{font-family:'Fraunces',serif;font-size:2.1rem;color:var(--paper);}
+  .btn-upsell{
+    display:inline-block;background:var(--gold);color:var(--ink);padding:14px 28px;
+    border:2px solid rgba(245,236,217,0.35);border-radius:8px;font-weight:800;font-size:0.96rem;
+    text-decoration:none;box-shadow:4px 4px 0 rgba(245,236,217,0.15);transition:transform .14s,box-shadow .14s;
+  }
+  .btn-upsell:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(245,236,217,0.15);}
+  .upsell-visual{display:flex;justify-content:center;}
+  .film-cel{width:100%;max-width:290px;position:relative;}
+  .sprocket-h{height:24px;background-image:radial-gradient(circle,rgba(34,28,20,.9) 3.5px,rgba(245,236,217,.08) 4px);background-size:22px 24px;background-repeat:repeat-x;}
+  .cel-inner{border:2px solid rgba(245,236,217,0.2);overflow:hidden;border-radius:4px;}
+  .cel-bar{padding:10px 14px;background:rgba(245,236,217,0.06);border-bottom:1px solid rgba(245,236,217,0.12);display:flex;justify-content:space-between;align-items:center;}
+  .cel-bar .hand{font-size:1.05rem;color:var(--gold);}
+  .cel-bar .num{font-size:0.68rem;letter-spacing:0.06em;color:rgba(245,236,217,0.45);}
+  .cel-video{width:100%;aspect-ratio:9/13;object-fit:cover;display:block;background:#1a1410;}
+  .cel-video-placeholder{width:100%;aspect-ratio:9/13;background:#1a1410;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+  .cel-video-placeholder .anim-icon{font-size:3rem;animation:floatA 3s ease-in-out infinite;}
+  .cel-video-placeholder .anim-label{font-size:0.72rem;color:rgba(245,236,217,0.4);letter-spacing:0.06em;text-transform:uppercase;font-weight:700;}
+
+  /* ─── PRICING ─── */
+  .pricing{padding:96px 0;position:relative;overflow:hidden;}
+  .pricing-deco-1{top:30px;left:20px;opacity:0.07;}
+  .pricing-deco-2{bottom:40px;right:10px;opacity:0.07;}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;position:relative;z-index:1;}
+  .p-card{border:2px solid var(--ink);background:var(--paper);border-radius:6px;position:relative;overflow:hidden;}
+  .p-card.main .p-head{background:var(--red);color:var(--paper);}
+  .p-head{padding:26px 28px 22px;border-bottom:2px solid var(--ink);}
+  .p-tag{font-size:0.72rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;display:block;color:var(--ink-soft);}
+  .p-card.main .p-tag{color:rgba(245,236,217,0.7);}
+  .p-head h3{font-size:1.12rem;margin-bottom:4px;}
+  .p-head .sub{font-size:0.84rem;opacity:0.8;font-weight:600;}
+  .price-row{display:flex;align-items:baseline;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .old-p{font-size:0.92rem;text-decoration:line-through;opacity:0.5;}
+  .new-p{font-family:'Fraunces',serif;font-size:2.3rem;font-weight:500;}
+  .p-body{padding:26px 28px 30px;}
+  .p-list{list-style:none;margin-bottom:22px;}
+  .p-list li{font-size:0.9rem;font-weight:600;color:var(--ink-soft);padding:9px 0;border-bottom:1px solid var(--line);display:flex;gap:9px;}
+  .p-list li:last-child{border-bottom:none;}
+  .p-list .ck{color:var(--red-dark);font-weight:800;flex-shrink:0;}
+  .btn-p{
+    display:block;text-align:center;padding:14px;border:2px solid var(--ink);border-radius:8px;
+    text-decoration:none;font-weight:800;font-size:0.92rem;color:var(--ink);transition:background .14s,color .14s;
+  }
+  .btn-p:hover{background:var(--ink);color:var(--paper);}
+  .p-card.main .btn-p{background:var(--ink);color:var(--paper);}
+  .p-card.main .btn-p:hover{background:var(--red-dark);border-color:var(--red-dark);}
+  .card-corner{position:absolute;bottom:-2px;right:-2px;opacity:0.06;pointer-events:none;}
+
+  .price-note{text-align:center;color:var(--ink-soft);font-size:0.82rem;font-weight:600;margin-top:24px;position:relative;z-index:1;}
+
+  /* ─── FAQ ─── */
+  .faq{padding:88px 0;background:var(--paper-2);border-top:2px solid var(--ink);position:relative;overflow:hidden;}
+  .faq-deco-1{bottom:20px;right:30px;opacity:0.08;}
+  .faq-list{max-width:720px;position:relative;z-index:1;}
+  .faq-item{border-bottom:1.5px dashed var(--line);}
+  .faq-item summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1rem;padding:20px 0;color:var(--ink);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item .plus{color:var(--red-dark);font-size:1.2rem;margin-left:14px;transition:transform .2s;flex-shrink:0;}
+  .faq-item[open] .plus{transform:rotate(45deg);}
+  .faq-item p{color:var(--ink-soft);font-size:0.93rem;font-weight:600;padding-bottom:18px;max-width:60ch;}
+
+  /* ─── FINAL ─── */
+  .final{padding:96px 0;background:var(--ink);color:var(--paper);text-align:center;position:relative;overflow:hidden;}
+  .final-deco-1{top:20px;left:10%;opacity:0.07;}
+  .final-deco-2{bottom:20px;right:10%;opacity:0.07;}
+  .final-deco-3{top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;}
+  .final h2{font-size:clamp(1.9rem,3.4vw,2.7rem);max-width:18ch;margin:0 auto 16px;color:var(--paper);position:relative;z-index:1;}
+  .final p{color:rgba(245,236,217,0.72);margin-bottom:30px;font-size:1.02rem;font-weight:600;position:relative;z-index:1;}
+  .final .btn-primary{box-shadow:4px 4px 0 rgba(245,236,217,0.3);position:relative;z-index:1;}
+  .final .btn-primary:hover{box-shadow:6px 6px 0 rgba(245,236,217,0.3);}
+
+  footer{padding:32px 0;background:var(--ink);border-top:1px solid rgba(245,236,217,0.12);text-align:center;font-size:0.8rem;font-weight:600;color:rgba(245,236,217,0.5);}
+  footer a{color:var(--paper);}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;gap:44px;}
+    .steps-list{grid-template-columns:1fr;}
+    .step-box{border-right:none;border-bottom:1.5px solid var(--ink);}
+    .step-box:last-child{border-bottom:none;}
+    .form-layout{grid-template-columns:1fr;}
+    .form-info{border-right:none;border-bottom:2px dashed var(--ink);}
+    .upsell-inner{grid-template-columns:1fr;}
+    .price-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:560px){
+    .form-body{padding:26px 20px;}
+    .form-info{padding:30px 22px;}
+    .trust-pills .pill{font-size:0.73rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="logo">kr.<em>IA</em>rt<span class="logo-heart">♥</span></div>
+    <a href="#form" class="nav-cta">Criar minha música</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="deco hero-deco-1">
+    <svg width="180" height="180" viewBox="0 0 180 180"><circle cx="90" cy="90" r="88" fill="none" stroke="#C8432B" stroke-width="2"/><circle cx="90" cy="90" r="64" fill="none" stroke="#C8432B" stroke-width="1" stroke-dasharray="6 6"/></svg>
+  </div>
+  <div class="deco hero-deco-2">
+    <svg width="140" height="140" viewBox="0 0 140 140"><rect x="4" y="4" width="132" height="132" fill="none" stroke="#221C14" stroke-width="2"/><rect x="18" y="18" width="104" height="104" fill="none" stroke="#221C14" stroke-width="1" stroke-dasharray="5 5"/></svg>
+  </div>
+  <div class="deco hero-deco-3">
+    <svg width="80" height="76" viewBox="0 0 80 76"><path d="M40 70 C40 70 4 48 4 22 C4 10 13 2 24 2 C31 2 37 6 40 11 C43 6 49 2 56 2 C67 2 76 10 76 22 C76 48 40 70 40 70Z" fill="#C8432B"/></svg>
+  </div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">♪ Um presente que nenhuma loja vende</div>
+        <h1>Uma música feita do zero, <em>pra quem você mais ama</em>.</h1>
+        <p class="lede">Você conta a história. A gente cria uma música exclusiva com o nome, a personalidade e as memórias dessa pessoa — e entrega em até 24h no seu WhatsApp.</p>
+        <div class="hero-ctas">
+          <a href="#form" class="btn-primary">Criar minha música agora</a>
+          <div class="price-hint">a partir de <strong>R$ 37,90</strong></div>
+        </div>
+        <div class="trust-pills">
+          <span class="pill">♪ Música 100% exclusiva</span>
+          <span class="pill">⚡ Entrega em até 24h</span>
+          <span class="pill">✉ Via WhatsApp</span>
+          <span class="pill">❤ Feita da sua história</span>
+        </div>
+      </div>
+      <div class="vinyl-wrap">
+        <div class="v-deco-1"><svg width="52" height="52" viewBox="0 0 52 52"><path d="M26 48 C26 48 4 34 4 18 C4 9 11 3 18 3 C22 3 25 5 26 8 C27 5 30 3 34 3 C41 3 48 9 48 18 C48 34 26 48 26 48Z" fill="#C8432B"/></svg></div>
+        <div class="v-deco-2"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="2" y="2" width="40" height="40" fill="none" stroke="#B9853B" stroke-width="2.5" stroke-dasharray="5 4"/></svg></div>
+        <div class="v-deco-3"><svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="#221C14" stroke-width="2"/></svg></div>
+        <div class="vinyl-card reveal">
+          <div class="vc-top">
+            <div class="vinyl-disc"></div>
+            <div class="vc-meta">
+              <div class="song-name">Feliz Aniversário, Drica</div>
+              <div class="for-who">de: João · sertanejo · voz feminina</div>
+            </div>
+          </div>
+          <div class="vc-waveform">
+            <div class="wave-bars">
+              <span class="dark" style="height:18%"></span><span class="red" style="height:55%"></span><span class="dark" style="height:80%"></span><span class="dark" style="height:45%"></span><span class="red" style="height:90%"></span><span class="dark" style="height:38%"></span><span class="dark" style="height:70%"></span><span class="red" style="height:55%"></span><span class="dark" style="height:85%"></span><span class="dark" style="height:40%"></span><span class="red" style="height:75%"></span><span class="dark" style="height:60%"></span><span class="dark" style="height:30%"></span><span class="red" style="height:88%"></span><span class="dark" style="height:50%"></span><span class="dark" style="height:95%"></span><span class="red" style="height:42%"></span><span class="dark" style="height:68%"></span><span class="dark" style="height:78%"></span><span class="red" style="height:35%"></span><span class="dark" style="height:82%"></span><span class="dark" style="height:52%"></span><span class="red" style="height:65%"></span><span class="dark" style="height:48%"></span>
+            </div>
+          </div>
+          <div class="vc-controls">
+            <div class="time">0:34</div>
+            <div class="play-btn">▶</div>
+            <div class="time">2:48</div>
+          </div>
+          <div class="vc-label">
+            <div class="hand">"Te amo do jeitinho que você é"</div>
+            <div class="sub">trecho da letra · criada só pra essa pessoa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HOW -->
+<section class="how">
+  <div class="deco how-deco-1"><svg width="260" height="260" viewBox="0 0 260 260"><circle cx="130" cy="130" r="128" fill="none" stroke="#221C14" stroke-width="1.5" stroke-dasharray="8 8"/><circle cx="130" cy="130" r="96" fill="none" stroke="#221C14" stroke-width="1"/></svg></div>
+  <div class="deco how-deco-2"><svg width="200" height="200" viewBox="0 0 200 200"><rect x="2" y="2" width="196" height="196" fill="none" stroke="#221C14" stroke-width="1.5"/><rect x="18" y="18" width="164" height="164" fill="none" stroke="#221C14" stroke-width="1" stroke-dasharray="6 6"/></svg></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">♩ Como funciona</div>
+      <h2>Três passos até ela ouvir a música que só existe pra ela</h2>
+      <p>Você não precisa saber nada de música. Só nos contar quem é essa pessoa.</p>
+    </div>
+    <div class="steps-list reveal">
+      <div class="step-box">
+        <div class="step-num">01</div>
+        <div class="step-shape"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" fill="#C8432B"/></svg></div>
+        <h3>Preencha o roteiro</h3>
+        <p>Nome, personalidade, uma memória, estilo musical e tom da letra. Quanto mais você conta, mais a música vai parecer feita por alguém que conhece essa pessoa de verdade.</p>
+        <span class="step-tag">⏱ ~3 minutos</span>
+      </div>
+      <div class="step-box">
+        <div class="step-num">02</div>
+        <div class="step-shape"><svg width="80" height="80" viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" fill="#B9853B"/></svg></div>
+        <h3>Composta e cantada sob encomenda</h3>
+        <p>Letra, melodia e voz criadas exclusivamente para o pedido — não é template com nome trocado. Cada composição passa por revisão manual antes de sair.</p>
+        <span class="step-tag">⏱ até 24 horas</span>
+      </div>
+      <div class="step-box">
+        <div class="step-num">03</div>
+        <div class="step-shape"><svg width="80" height="74" viewBox="0 0 80 74"><path d="M40 68 C40 68 4 46 4 20 C4 8 13 0 24 0 C31 0 37 4 40 9 C43 4 49 0 56 0 C67 0 76 8 76 20 C76 46 40 68 40 68Z" fill="#C8432B"/></svg></div>
+        <h3>Você recebe e presenteia</h3>
+        <p>Arquivo de áudio entregue pelo WhatsApp ou e-mail, pronto pra mandar ou colocar no story — essa pessoa nunca vai ter ouvido algo assim antes.</p>
+        <span class="step-tag">⏱ arquivo MP3</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="formsec" id="form">
+  <div class="deco formsec-deco-1"><svg width="150" height="150" viewBox="0 0 150 150"><path d="M75 140 C75 140 10 104 10 52 C10 24 27 6 50 6 C62 6 70 11 75 18 C80 11 88 6 100 6 C123 6 140 24 140 52 C140 104 75 140 75 140Z" fill="#C8432B"/></svg></div>
+  <div class="deco formsec-deco-2"><svg width="120" height="120" viewBox="0 0 120 120"><rect x="2" y="2" width="116" height="116" fill="none" stroke="#221C14" stroke-width="2" stroke-dasharray="7 5"/></svg></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">♪ O roteiro da música</div>
+      <h2>O que você preenche pra gente criar a música certa</h2>
+      <p>Cada campo vira um verso, uma rima ou um detalhe que faz essa pessoa sorrir.</p>
+    </div>
+    <div class="form-layout">
+      <div class="form-info">
+        <h2>Ficha da composição</h2>
+        <p>Não é um gerador automático. Com essas informações a gente escreve a letra, escolhe a melodia e canta com a voz que faz mais sentido pra esse presente.</p>
+        <ul class="side-list">
+          <li><span class="ico">♪</span> Letra exclusiva com o nome e a personalidade da pessoa</li>
+          <li><span class="ico">♪</span> Melodia no estilo musical que você escolher</li>
+          <li><span class="ico">♪</span> Voz feminina ou masculina, conforme o pedido</li>
+          <li><span class="ico">♪</span> Arquivo MP3 em alta qualidade</li>
+          <li><span class="ico">✏</span> Um ajuste incluso, sem custo extra</li>
+          <li><span class="ico">⚡</span> Entrega em até 24 horas</li>
+          <li><span class="ico">🔒</span> Composição 100% exclusiva — nunca reaplicada</li>
+        </ul>
+      </div>
+      <div class="form-body">
+        <div class="progress-wrap">
+          <div class="prog-seg done" data-b="1"></div>
+          <div class="prog-seg" data-b="2"></div>
+          <div class="prog-seg" data-b="3"></div>
+          <div class="prog-seg" data-b="4"></div>
+        </div>
+        <div class="step-meta">
+          <span class="step-tag-label" id="stepLabel">Etapa 1 · A pessoa</span>
+          <span class="step-counter">Passo <span id="wzCur">1</span> de 4</span>
+        </div>
+
+        <!-- STEP 1: A PESSOA -->
+        <div class="wizard-step active" data-step="1">
+          <div class="field-g">
+            <div class="f-label">Nome de quem vai receber <span class="req">obrigatório</span></div>
+            <div class="f-hint">Escreva como se fala — ex: "Drica", não "Dryca". A voz vai cantar exatamente assim.</div>
+            <div class="f-mock">Nome da pessoa</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Ela é o quê pra você? <span class="req">obrigatório</span></div>
+            <div class="chips">
+              <span class="chip on">Filho(a)</span>
+              <span class="chip">Mãe</span>
+              <span class="chip">Pai</span>
+              <span class="chip">Namorado(a)</span>
+              <span class="chip">Esposo(a)</span>
+              <span class="chip">Amigo(a)</span>
+              <span class="chip">Irmão / Irmã</span>
+              <span class="chip">Avô / Avó</span>
+              <span class="chip">Neto(a)</span>
+              <span class="chip">Colega / Chefe</span>
+              <span class="chip">Outro</span>
+            </div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Ocasião <span class="req">obrigatório</span></div>
+            <div class="chips">
+              <span class="chip on">Aniversário</span>
+              <span class="chip">Pedido de namoro</span>
+              <span class="chip">Pedido de casamento</span>
+              <span class="chip">Homenagem / gratidão</span>
+              <span class="chip">Dia das Mães</span>
+              <span class="chip">Dia dos Pais</span>
+              <span class="chip">Dia das Crianças</span>
+              <span class="chip">Formatura</span>
+              <span class="chip">Natal / Ano Novo</span>
+              <span class="chip">Sem data especial</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: ESTILO E VOZ -->
+        <div class="wizard-step" data-step="2">
+          <div class="field-g">
+            <div class="f-label">Estilo musical <span class="req">obrigatório</span></div>
+            <div class="f-hint">Escolha o que a pessoa curte ouvir — a música vai soar familiar pra ela.</div>
+            <div class="chips">
+              <span class="chip on">Sertanejo</span>
+              <span class="chip">Pop</span>
+              <span class="chip">MPB / Acústico</span>
+              <span class="chip">Gospel</span>
+              <span class="chip">Forró</span>
+              <span class="chip">Funk romântico</span>
+              <span class="chip">Pagode / Samba</span>
+              <span class="chip">Infantil</span>
+              <span class="chip">Rock</span>
+              <span class="chip">Jazz / Blues</span>
+              <span class="chip">Reggae</span>
+              <span class="chip">Hip-hop / Rap</span>
+              <span class="chip">Eletrônico / Lo-fi</span>
+              <span class="chip">Bossa Nova</span>
+              <span class="chip">Outro</span>
+            </div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Voz de quem canta <span class="req">obrigatório</span></div>
+            <div class="chips">
+              <span class="chip on">Feminina</span>
+              <span class="chip">Masculina</span>
+            </div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Tom da letra <span class="req">obrigatório</span></div>
+            <div class="f-hint">Como você quer que a música soe emocionalmente?</div>
+            <div class="chips">
+              <span class="chip on">Romântico / apaixonado</span>
+              <span class="chip">Divertido / leve</span>
+              <span class="chip">Emocionante / tocante</span>
+              <span class="chip">Saudosista / nostálgico</span>
+              <span class="chip">Animado / festivo</span>
+              <span class="chip">Sem preferência</span>
+            </div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Duração aproximada</div>
+            <div class="chips">
+              <span class="chip on">Curta (~1 min)</span>
+              <span class="chip">Média (~2 min)</span>
+              <span class="chip">Completa (~3 min)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: A HISTÓRIA -->
+        <div class="wizard-step" data-step="3">
+          <div class="field-g">
+            <div class="f-label">Como essa pessoa é? <span class="req">quanto mais detalhe, melhor</span></div>
+            <div class="f-hint">Jeito de ser, traços marcantes, o que ela ama fazer — isso vai parar na letra.</div>
+            <div class="f-mock">Ex: engraçada, protetora, apaixonada por praia, sempre ajuda todo mundo, chora em filme...</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Uma memória ou momento especial com ela</div>
+            <div class="f-hint">Um episódio real vira a melhor cena da letra.</div>
+            <div class="f-mock">Ex: a viagem que fizemos juntos, o dia que ela apareceu quando precisei, aquela risada que não para...</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Apelidos carinhosos ou palavras só de vocês</div>
+            <div class="f-hint">Opcional — mas aparece na música e torna tudo mais íntimo.</div>
+            <div class="f-mock">Ex: "Neném", "Vida", "Minha pessoa", "Parceiro"...</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Tem algo que você sempre quis dizer mas nunca disse?</div>
+            <div class="f-hint">A música pode ser o jeito de dizer. Opcional.</div>
+            <div class="f-textarea">Escreva à vontade — isso fica só entre a gente e vai virar verso.</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Já tem uma letra pronta?</div>
+            <div class="f-hint">Se quiser usar sua própria letra, cole aqui. A gente só põe pra tocar.</div>
+            <div class="f-textarea">Cole a letra aqui — opcional</div>
+          </div>
+        </div>
+
+        <!-- STEP 4: CONTATO E ENTREGA -->
+        <div class="wizard-step" data-step="4">
+          <div class="field-g">
+            <div class="f-label">Como quer receber o resultado <span class="req">obrigatório</span></div>
+            <div class="chips">
+              <span class="chip on">WhatsApp</span>
+              <span class="chip">E-mail</span>
+              <span class="chip">Os dois</span>
+            </div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">WhatsApp com DDD <span class="req">obrigatório</span></div>
+            <div class="f-mock">Ex: (47) 99999-9999 — sem DDD não conseguimos entregar</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">E-mail <span class="req">opcional</span></div>
+            <div class="f-mock">seuemail@exemplo.com</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Deseja adicionar o miniclipe animado? <span class="req">opcional · +R$ 60,00</span></div>
+            <div class="f-hint">A música exclusiva + um miniclipe com essa pessoa como personagem de desenho animado.</div>
+            <div class="chips">
+              <span class="chip">🎬 Sim, quero o miniclipe também</span>
+              <span class="chip on">Só a música por agora</span>
+            </div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Algum detalhe que a gente não perguntou?</div>
+            <div class="f-textarea">Referência de músicas que ela ama, instrumentos favoritos, algo sobre a voz, qualquer coisa que ajude a criar o presente perfeito.</div>
+          </div>
+          <div class="field-g">
+            <div class="f-label">Resumo do seu pedido</div>
+            <div class="summary-box" id="summaryBox">
+              <div class="s-row"><span class="s-key">Relação</span><span id="sRelacao">—</span></div>
+              <div class="s-row"><span class="s-key">Ocasião</span><span id="sOcasiao">—</span></div>
+              <div class="s-row"><span class="s-key">Estilo</span><span id="sEstilo">—</span></div>
+              <div class="s-row"><span class="s-key">Voz</span><span id="sVoz">Feminina</span></div>
+              <div class="s-row"><span class="s-key">Tom</span><span id="sTom">—</span></div>
+              <div class="s-row"><span class="s-key">Entrega</span><span>até 24 horas</span></div>
+              <div class="s-row"><span class="s-key">Valor</span><span style="color:var(--red-dark);font-weight:800;">R$ 37,90</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wz-nav">
+          <button type="button" class="wz-btn back" id="wzBack">← Voltar</button>
+          <button type="button" class="wz-btn next" id="wzNext">Próximo →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UPSELL -->
+<section class="upsell">
+  <div class="deco upsell-deco-1"><svg width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" fill="none" stroke="#F5ECD9" stroke-width="1.5" stroke-dasharray="8 8"/><circle cx="100" cy="100" r="70" fill="none" stroke="#F5ECD9" stroke-width="1"/></svg></div>
+  <div class="deco upsell-deco-2"><svg width="160" height="160" viewBox="0 0 160 160"><rect x="4" y="4" width="152" height="152" fill="none" stroke="#B9853B" stroke-width="2" stroke-dasharray="8 6"/></svg></div>
+  <div class="deco upsell-deco-3"><svg width="280" height="260" viewBox="0 0 280 260"><path d="M140 250 C140 250 10 180 10 90 C10 38 45 6 88 6 C112 6 130 18 140 34 C150 18 168 6 192 6 C235 6 270 38 270 90 C270 180 140 250 140 250Z" fill="#F5ECD9"/></svg></div>
+  <div class="wrap">
+    <div class="upsell-inner">
+      <div>
+        <div class="upsell-eye">Upgrade do pedido</div>
+        <h2>Transforma a música num <em>miniclipe</em> com essa pessoa como personagem de desenho animado.</h2>
+        <p>Além da música exclusiva, a gente cria um miniclipe em estilo desenho animado com essa pessoa como personagem — baseado em uma foto — pra mandar no WhatsApp ou mostrar ao vivo.</p>
+        <ul class="upsell-list">
+          <li><span class="chk">✓</span> Personagem em estilo desenho animado baseado na foto</li>
+          <li><span class="chk">✓</span> A música exclusiva que você pediu tocando no miniclipe</li>
+          <li><span class="chk">✓</span> Vídeo vertical, pronto pra Stories e WhatsApp</li>
+          <li><span class="chk">✓</span> Curadoria manual antes da entrega</li>
+          <li><span class="chk">✓</span> Entrega em até 2 dias úteis</li>
+        </ul>
+        <div class="upsell-price-row">
+          <span class="u-new">+R$ 60,00</span>
+        </div>
+        <a href="#form" class="btn-upsell">Adicionar miniclipe animado ao pedido</a>
+      </div>
+      <div class="upsell-visual">
+        <div class="film-cel">
+          <div class="sprocket-h"></div>
+          <div class="cel-inner">
+            <div class="cel-bar">
+              <span class="hand">cena final — sorriso</span>
+              <span class="num">CENA 04/04</span>
+            </div>
+            <video class="cel-video" src="demo.mp4" autoplay muted loop playsinline></video>
+            <div class="cel-video-placeholder" style="display:none;">
+              <div class="anim-icon">🎬</div>
+              <div class="anim-label">miniclipe animado</div>
+            </div>
+          </div>
+          <div class="sprocket-h"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="preco">
+  <div class="deco pricing-deco-1"><svg width="180" height="180" viewBox="0 0 180 180"><path d="M90 170 C90 170 8 122 8 62 C8 28 30 4 58 4 C73 4 83 11 90 20 C97 11 107 4 122 4 C150 4 172 28 172 62 C172 122 90 170 90 170Z" fill="#C8432B"/></svg></div>
+  <div class="deco pricing-deco-2"><svg width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="78" fill="none" stroke="#B9853B" stroke-width="2" stroke-dasharray="6 6"/><circle cx="80" cy="80" r="56" fill="none" stroke="#B9853B" stroke-width="1"/></svg></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">♩ Preços</div>
+      <h2>Escolha o que faz mais sentido pra você</h2>
+      <p>Preço de lançamento, vagas limitadas por dia pra manter a qualidade de cada entrega.</p>
+    </div>
+    <div class="price-grid">
+      <div class="p-card main">
+        <div class="card-corner"><svg width="90" height="90" viewBox="0 0 90 90"><circle cx="90" cy="90" r="88" fill="#221C14"/></svg></div>
+        <div class="p-head">
+          <span class="p-tag">Oferta de lançamento</span>
+          <h3>Música Personalizada</h3>
+          <div class="sub">Composição + letra + voz exclusiva</div>
+          <div class="price-row">
+            <span class="new-p">R$ 37,90</span>
+          </div>
+        </div>
+        <div class="p-body">
+          <ul class="p-list">
+            <li><span class="ck">✓</span> Letra exclusiva com o nome e personalidade da pessoa</li>
+            <li><span class="ck">✓</span> Melodia no estilo musical que você escolher</li>
+            <li><span class="ck">✓</span> Voz feminina ou masculina</li>
+            <li><span class="ck">✓</span> Um ajuste incluso, sem custo extra</li>
+            <li><span class="ck">✓</span> Entrega em até 24 horas</li>
+            <li><span class="ck">✓</span> Arquivo MP3 em alta qualidade</li>
+            <li><span class="ck">✓</span> Opção de adicionar miniclipe animado por +R$ 60,00</li>
+          </ul>
+          <a href="#form" class="btn-p">Quero a música — R$ 37,90</a>
+        </div>
+      </div>
+      <div class="p-card">
+        <div class="card-corner"><svg width="90" height="90" viewBox="0 0 90 90"><circle cx="90" cy="90" r="88" fill="#B9853B"/></svg></div>
+        <div class="p-head">
+          <span class="p-tag">Entrega mais rápida</span>
+          <h3>Música Expresso</h3>
+          <div class="sub">Tudo da música + fila prioritária</div>
+          <div class="price-row">
+            <span class="new-p">R$ 57,90</span>
+          </div>
+        </div>
+        <div class="p-body">
+          <ul class="p-list">
+            <li><span class="ck">✓</span> Tudo do plano padrão</li>
+            <li><span class="ck">✓</span> Entrega expressa em até 6 horas</li>
+            <li><span class="ck">✓</span> Prioridade na fila de produção</li>
+            <li><span class="ck">✓</span> Suporte direto durante a produção</li>
+            <li><span class="ck">✓</span> Opção de adicionar miniclipe animado por +R$ 60,00</li>
+          </ul>
+          <a href="#form" class="btn-p">Quero o expresso — R$ 57,90</a>
+        </div>
+      </div>
+    </div>
+    <p class="price-note">Pagamento via Pix. Pedido entra na produção após confirmação do pagamento.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="deco faq-deco-1"><svg width="130" height="130" viewBox="0 0 130 130"><rect x="3" y="3" width="124" height="124" fill="none" stroke="#221C14" stroke-width="2" stroke-dasharray="7 5"/></svg></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">♩ Dúvidas comuns</div>
+      <h2>Antes de pedir</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>A música vai ter o nome da pessoa de verdade? <span class="plus">+</span></summary>
+        <p>Sim. Ela é composta a partir das informações que você passa — nome, personalidade, memórias. Não é template com nome trocado: a letra é escrita do zero pra esse pedido específico.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Em quanto tempo recebo? <span class="plus">+</span></summary>
+        <p>No plano padrão, até 24 horas. No expresso, até 6 horas após confirmação do pagamento e envio das informações.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Posso pedir ajuste se não gostar de alguma parte? <span class="plus">+</span></summary>
+        <p>Sim. Cada pedido inclui um ajuste pontual na letra ou na interpretação, sem custo adicional, dentro do prazo de entrega.</p>
+      </details>
+      <details class="faq-item">
+        <summary>O que é o miniclipe animado? <span class="plus">+</span></summary>
+        <p>Com uma foto da pessoa, a gente cria um personagem em estilo desenho animado e une à música exclusiva — um miniclipe vertical, pronto pra WhatsApp e Stories. Adicional opcional por +R$ 60,00, com entrega em até 2 dias úteis.</p>
+      </details>
+      <details class="faq-item">
+        <summary>A música pode ser de mãe pro filho, esposa pro marido, namorado pra namorada? <span class="plus">+</span></summary>
+        <p>Exatamente. Você escolhe a relação, a ocasião e o tom — a música soa como se você mesmo tivesse composto. Mãe pro filho de 5 anos, esposa pro marido de 30 anos de casado, colega de trabalho — todos os pedidos têm o mesmo cuidado.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Como é feito o pagamento? <span class="plus">+</span></summary>
+        <p>Exclusivamente via Pix. Após o envio do formulário, você recebe a chave para pagamento. O pedido entra na produção após a confirmação.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="deco final-deco-1"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="#F5ECD9" stroke-width="2" stroke-dasharray="6 6"/></svg></div>
+  <div class="deco final-deco-2"><svg width="80" height="80" viewBox="0 0 80 80"><rect x="2" y="2" width="76" height="76" fill="none" stroke="#B9853B" stroke-width="2" stroke-dasharray="5 4"/></svg></div>
+  <div class="deco final-deco-3"><svg width="300" height="280" viewBox="0 0 300 280"><path d="M150 270 C150 270 8 192 8 92 C8 38 46 4 92 4 C118 4 138 17 150 34 C162 17 182 4 208 4 C254 4 292 38 292 92 C292 192 150 270 150 270Z" fill="#F5ECD9"/></svg></div>
+  <div class="wrap">
+    <h2>Uma música que só essa pessoa vai ter. Feita agora.</h2>
+    <p>Preencha o formulário e receba a composição em até 24 horas.</p>
+    <a href="#form" class="btn-primary">Criar minha música agora</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">kr.IArt — música personalizada com IA e curadoria real · <a href="#form">Criar música</a></div>
+</footer>
+
+<script>
+(function(){
+  const steps   = document.querySelectorAll('.wizard-step');
+  const bars    = document.querySelectorAll('.prog-seg');
+  const labelEl = document.getElementById('stepLabel');
+  const curEl   = document.getElementById('wzCur');
+  const backBtn = document.getElementById('wzBack');
+  const nextBtn = document.getElementById('wzNext');
+  const labels  = {
+    1:'Etapa 1 · A pessoa',
+    2:'Etapa 2 · Estilo e tom',
+    3:'Etapa 3 · A história',
+    4:'Etapa 4 · Contato e revisão'
+  };
+  let cur = 1;
+  const total = steps.length;
+
+  function getChipVal(step, labelText){
+    const stepEl = document.querySelector(`.wizard-step[data-step="${step}"]`);
+    if(!stepEl) return '—';
+    const labels = Array.from(stepEl.querySelectorAll('.f-label'));
+    const target = labels.find(l => l.textContent.includes(labelText));
+    if(!target) return '—';
+    const chips = target.closest('.field-g').querySelectorAll('.chip.on');
+    return chips.length ? Array.from(chips).map(c => c.textContent.trim()).join(', ') : '—';
+  }
+
+  function updateSummary(){
+    const rel   = getChipVal(1,'Ela é o quê');
+    const occ   = getChipVal(1,'Ocasião');
+    const est   = getChipVal(2,'Estilo musical');
+    const voz   = getChipVal(2,'Voz de quem');
+    const tom   = getChipVal(2,'Tom da letra');
+    document.getElementById('sRelacao').textContent = rel;
+    document.getElementById('sOcasiao').textContent = occ;
+    document.getElementById('sEstilo').textContent  = est;
+    document.getElementById('sVoz').textContent     = voz;
+    document.getElementById('sTom').textContent     = tom;
+  }
+
+  function render(){
+    steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === cur));
+    bars.forEach(b  => b.classList.toggle('done', Number(b.dataset.b) <= cur));
+    labelEl.textContent = labels[cur];
+    curEl.textContent   = cur;
+    backBtn.classList.toggle('show', cur > 1);
+    nextBtn.textContent = cur === total ? '✓ Ir para pagamento' : 'Próximo →';
+    if(cur === total) updateSummary();
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if(cur < total){
+      cur++;
+      render();
+      document.getElementById('form').scrollIntoView({behavior:'smooth',block:'start'});
+    } else {
+      nextBtn.disabled = true;
+      nextBtn.textContent = 'Em breve: pagamento via Pix';
+    }
+  });
+  backBtn.addEventListener('click', () => { if(cur > 1){ cur--; render(); } });
+  render();
+
+  // chips toggle
+  document.querySelectorAll('.chips').forEach(group => {
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('on'));
+    });
+  });
+
+  // reveal
+  const els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(e => {
+      e.forEach(x => { if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+    },{threshold:.15});
+    els.forEach(el => io.observe(el));
+  } else {
+    els.forEach(el => el.classList.add('in'));
+  }
+
+  // video fallback
+  document.querySelectorAll('.cel-video').forEach(v => {
+    v.addEventListener('error', () => {
+      v.style.display = 'none';
+      if(v.nextElementSibling) v.nextElementSibling.style.display = 'flex';
+    });
+  });
+})();
+</script>
+</body>
+</html>
