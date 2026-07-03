@@ -1038,6 +1038,8 @@
       let valor = PRECOS[plano] || PRECOS.padrao;
       if(incluiMiniclipe) valor += MINICLIPE_PRECO;
 
+      const pedidoId = crypto.randomUUID();
+
       let fotoUrl = null;
       const fotoFile = document.getElementById('fFoto').files[0];
       if(incluiMiniclipe && fotoFile){
@@ -1048,6 +1050,7 @@
       }
 
       const pedido = {
+        id: pedidoId,
         nome_pessoa: document.getElementById('fNome').value.trim(),
         relacao: chipValue('relacao'),
         ocasiao: chipLabel('ocasiao'),
@@ -1071,15 +1074,12 @@
         status_pagamento: 'aguardando_pagamento',
       };
 
-      const { data: inserted, error: insertErr } = await sb
+      const { error: insertErr } = await sb
         .from('pedidos_kriart')
-        .insert(pedido)
-        .select('id')
-        .single();
+        .insert(pedido);
 
       if(insertErr) throw new Error('Falha ao salvar pedido: ' + insertErr.message);
 
-      const pedidoId = inserted.id;
       const contato = entrega === 'email' ? pedido.email : pedido.whatsapp;
 
       const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
