@@ -65,6 +65,13 @@
   }
   .nav-cta:hover{background:var(--red-dark);}
 
+  /* ─── MARQUEE ─── */
+  .promo-marquee{background:var(--red-dark);color:#F5ECD9;overflow:hidden;white-space:nowrap;border-bottom:2px solid var(--ink);}
+  .promo-marquee-track{display:inline-flex;width:max-content;animation:marqueeScroll 22s linear infinite;}
+  .promo-marquee-track span{display:inline-block;padding:8px 0;font-size:0.78rem;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;}
+  @keyframes marqueeScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  @media (prefers-reduced-motion: reduce){.promo-marquee-track{animation:none;}}
+
   /* ─── HERO ─── */
   .hero{padding:72px 0 64px;position:relative;overflow:hidden;border-bottom:2px solid var(--ink);}
   .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;}
@@ -79,7 +86,8 @@
   }
   .hero h1{font-size:clamp(2.2rem,4.2vw,3.4rem);line-height:1.08;margin-bottom:22px;color:var(--ink);}
   .hero h1 em{font-style:italic;color:var(--red-dark);}
-  .hero .lede{font-size:1.08rem;font-weight:600;color:var(--ink-soft);margin-bottom:32px;max-width:46ch;}
+  .hero .lede{font-size:1.08rem;font-weight:600;color:var(--ink-soft);margin-bottom:8px;max-width:46ch;}
+  .hero-ai-note{font-size:0.74rem;font-weight:600;color:var(--ink-soft);opacity:0.65;margin-bottom:24px;}
   .hero-ctas{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
   .btn-primary{
     background:var(--red);color:var(--paper);padding:15px 30px;
@@ -263,6 +271,7 @@
   .upsell-price-row{display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
   .u-old{font-size:0.94rem;text-decoration:line-through;color:rgba(245,236,217,0.38);}
   .u-new{font-family:'Fraunces',serif;font-size:2.1rem;color:var(--paper);}
+  .u-old{font-size:1.15rem;font-weight:700;color:rgba(245,236,217,0.5);text-decoration:line-through;}
   .btn-upsell{
     display:inline-block;background:var(--gold);color:var(--ink);padding:14px 28px;
     border:2px solid rgba(245,236,217,0.35);border-radius:8px;font-weight:800;font-size:0.96rem;
@@ -294,6 +303,7 @@
   .p-head h3{font-size:1.12rem;margin-bottom:4px;}
   .p-head .sub{font-size:0.84rem;opacity:0.8;font-weight:600;}
   .price-row{display:flex;align-items:baseline;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .old-p{font-size:1.05rem;font-weight:700;color:var(--ink-soft);opacity:0.55;text-decoration:line-through;}
   .old-p{font-size:0.92rem;text-decoration:line-through;opacity:0.5;}
   .new-p{font-family:'Fraunces',serif;font-size:2.3rem;font-weight:500;}
   .p-body{padding:26px 28px 30px;}
@@ -358,6 +368,14 @@
 </head>
 <body>
 
+<!-- MARQUEE -->
+<div class="promo-marquee">
+  <div class="promo-marquee-track">
+    <span>♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO!</span>
+    <span aria-hidden="true">♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO! ♪ PROMOÇÃO POR TEMPO LIMITADO!</span>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav class="nav">
   <div class="wrap">
@@ -383,6 +401,7 @@
         <div class="eyebrow">♪ Um presente que nenhuma loja vende</div>
         <h1>Uma música feita do zero, <em>pra quem você mais ama</em>.</h1>
         <p class="lede">Você conta a história. A gente cria uma música exclusiva com o nome, a personalidade e as memórias dessa pessoa — e entrega em até 24h no seu WhatsApp.</p>
+        <p class="hero-ai-note">arranjo musical feito por IA</p>
         <div class="hero-ctas">
           <a href="#form" class="btn-primary">Criar minha música agora</a>
           <div class="price-hint">a partir de <strong>R$ 37,90</strong></div>
@@ -691,6 +710,7 @@
           <li><span class="chk">✓</span> Entrega em até 2 dias úteis</li>
         </ul>
         <div class="upsell-price-row">
+          <span class="u-old">R$ 150,00</span>
           <span class="u-new">+R$ 60,00</span>
         </div>
         <a href="#form" class="btn-upsell">Adicionar miniclipe animado ao pedido</a>
@@ -734,6 +754,7 @@
           <h3>Música Personalizada</h3>
           <div class="sub">Composição + letra + voz exclusiva</div>
           <div class="price-row">
+            <span class="old-p">R$ 97,00</span>
             <span class="new-p">R$ 37,90</span>
           </div>
         </div>
@@ -757,6 +778,7 @@
           <h3>Música Expresso</h3>
           <div class="sub">Tudo da música + fila prioritária</div>
           <div class="price-row">
+            <span class="old-p">R$ 127,00</span>
             <span class="new-p">R$ 57,90</span>
           </div>
         </div>
