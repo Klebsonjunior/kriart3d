@@ -522,27 +522,27 @@
           <div class="field-g">
             <div class="f-label">Nome de quem vai receber <span class="req">obrigatório</span></div>
             <div class="f-hint">Escreva como se fala — ex: "Drica", não "Dryca". A voz vai cantar exatamente assim.</div>
-            <div class="f-mock">Nome da pessoa</div>
+            <input type="text" id="fNome" class="f-mock" placeholder="Nome da pessoa" style="width:100%;font-family:inherit;">
           </div>
           <div class="field-g">
             <div class="f-label">Ela é o quê pra você? <span class="req">obrigatório</span></div>
-            <div class="chips">
-              <span class="chip on">Filho(a)</span>
-              <span class="chip">Mãe</span>
-              <span class="chip">Pai</span>
-              <span class="chip">Namorado(a)</span>
-              <span class="chip">Esposo(a)</span>
-              <span class="chip">Amigo(a)</span>
-              <span class="chip">Irmão / Irmã</span>
-              <span class="chip">Avô / Avó</span>
-              <span class="chip">Neto(a)</span>
-              <span class="chip">Colega / Chefe</span>
-              <span class="chip">Outro</span>
+            <div class="chips" data-group="relacao" data-single="true">
+              <span class="chip on" data-value="filho_a">Filho(a)</span>
+              <span class="chip" data-value="mae">Mãe</span>
+              <span class="chip" data-value="pai">Pai</span>
+              <span class="chip" data-value="namorado_a">Namorado(a)</span>
+              <span class="chip" data-value="esposo_a">Esposo(a)</span>
+              <span class="chip" data-value="amigo_a">Amigo(a)</span>
+              <span class="chip" data-value="irmao_ira">Irmão / Irmã</span>
+              <span class="chip" data-value="avo">Avô / Avó</span>
+              <span class="chip" data-value="neto_a">Neto(a)</span>
+              <span class="chip" data-value="colega_chefe">Colega / Chefe</span>
+              <span class="chip" data-value="outro">Outro</span>
             </div>
           </div>
           <div class="field-g">
             <div class="f-label">Ocasião <span class="req">obrigatório</span></div>
-            <div class="chips">
+            <div class="chips" data-group="ocasiao" data-single="true">
               <span class="chip on">Aniversário</span>
               <span class="chip">Pedido de namoro</span>
               <span class="chip">Pedido de casamento</span>
@@ -562,7 +562,7 @@
           <div class="field-g">
             <div class="f-label">Estilo musical <span class="req">obrigatório</span></div>
             <div class="f-hint">Escolha o que a pessoa curte ouvir — a música vai soar familiar pra ela.</div>
-            <div class="chips">
+            <div class="chips" data-group="estilo" data-single="true">
               <span class="chip on">Sertanejo</span>
               <span class="chip">Pop</span>
               <span class="chip">MPB / Acústico</span>
@@ -582,15 +582,15 @@
           </div>
           <div class="field-g">
             <div class="f-label">Voz de quem canta <span class="req">obrigatório</span></div>
-            <div class="chips">
-              <span class="chip on">Feminina</span>
-              <span class="chip">Masculina</span>
+            <div class="chips" data-group="voz" data-single="true">
+              <span class="chip on" data-value="feminina">Feminina</span>
+              <span class="chip" data-value="masculina">Masculina</span>
             </div>
           </div>
           <div class="field-g">
             <div class="f-label">Tom da letra <span class="req">obrigatório</span></div>
             <div class="f-hint">Como você quer que a música soe emocionalmente?</div>
-            <div class="chips">
+            <div class="chips" data-group="tom" data-single="true">
               <span class="chip on">Romântico / apaixonado</span>
               <span class="chip">Divertido / leve</span>
               <span class="chip">Emocionante / tocante</span>
@@ -601,10 +601,10 @@
           </div>
           <div class="field-g">
             <div class="f-label">Duração aproximada</div>
-            <div class="chips">
-              <span class="chip on">Curta (~1 min)</span>
-              <span class="chip">Média (~2 min)</span>
-              <span class="chip">Completa (~3 min)</span>
+            <div class="chips" data-group="duracao" data-single="true">
+              <span class="chip on" data-value="curta">Curta (~1 min)</span>
+              <span class="chip" data-value="media">Média (~2 min)</span>
+              <span class="chip" data-value="completa">Completa (~3 min)</span>
             </div>
           </div>
         </div>
@@ -614,59 +614,74 @@
           <div class="field-g">
             <div class="f-label">Como essa pessoa é? <span class="req">quanto mais detalhe, melhor</span></div>
             <div class="f-hint">Jeito de ser, traços marcantes, o que ela ama fazer — isso vai parar na letra.</div>
-            <div class="f-mock">Ex: engraçada, protetora, apaixonada por praia, sempre ajuda todo mundo, chora em filme...</div>
+            <textarea id="fQualidades" class="f-textarea" placeholder="Ex: engraçada, protetora, apaixonada por praia, sempre ajuda todo mundo, chora em filme..."></textarea>
           </div>
           <div class="field-g">
             <div class="f-label">Uma memória ou momento especial com ela</div>
             <div class="f-hint">Um episódio real vira a melhor cena da letra.</div>
-            <div class="f-mock">Ex: a viagem que fizemos juntos, o dia que ela apareceu quando precisei, aquela risada que não para...</div>
+            <textarea id="fMemoria" class="f-textarea" placeholder="Ex: a viagem que fizemos juntos, o dia que ela apareceu quando precisei, aquela risada que não para..."></textarea>
           </div>
           <div class="field-g">
             <div class="f-label">Apelidos carinhosos ou palavras só de vocês</div>
             <div class="f-hint">Opcional — mas aparece na música e torna tudo mais íntimo.</div>
-            <div class="f-mock">Ex: "Neném", "Vida", "Minha pessoa", "Parceiro"...</div>
+            <input type="text" id="fApelidos" class="f-mock" placeholder='Ex: "Neném", "Vida", "Minha pessoa", "Parceiro"...' style="width:100%;font-family:inherit;">
           </div>
           <div class="field-g">
             <div class="f-label">Tem algo que você sempre quis dizer mas nunca disse?</div>
             <div class="f-hint">A música pode ser o jeito de dizer. Opcional.</div>
-            <div class="f-textarea">Escreva à vontade — isso fica só entre a gente e vai virar verso.</div>
+            <textarea id="fMensagemIntima" class="f-textarea" placeholder="Escreva à vontade — isso fica só entre a gente e vai virar verso."></textarea>
           </div>
           <div class="field-g">
             <div class="f-label">Já tem uma letra pronta?</div>
             <div class="f-hint">Se quiser usar sua própria letra, cole aqui. A gente só põe pra tocar.</div>
-            <div class="f-textarea">Cole a letra aqui — opcional</div>
+            <textarea id="fLetraPronta" class="f-textarea" placeholder="Cole a letra aqui — opcional"></textarea>
           </div>
         </div>
 
         <!-- STEP 4: CONTATO E ENTREGA -->
         <div class="wizard-step" data-step="4">
           <div class="field-g">
-            <div class="f-label">Como quer receber o resultado <span class="req">obrigatório</span></div>
-            <div class="chips">
-              <span class="chip on">WhatsApp</span>
-              <span class="chip">E-mail</span>
-              <span class="chip">Os dois</span>
+            <div class="f-label">Qual plano você quer? <span class="req">obrigatório</span></div>
+            <div class="chips" data-group="plano" data-single="true">
+              <span class="chip on" data-value="padrao">Padrão — R$ 37,90 · até 24h</span>
+              <span class="chip" data-value="expresso">Expresso — R$ 57,90 · até 6h</span>
             </div>
           </div>
           <div class="field-g">
-            <div class="f-label">WhatsApp com DDD <span class="req">obrigatório</span></div>
-            <div class="f-mock">Ex: (47) 99999-9999 — sem DDD não conseguimos entregar</div>
+            <div class="f-label">Como quer receber o resultado <span class="req">obrigatório</span></div>
+            <div class="chips" data-group="entrega" data-single="true">
+              <span class="chip on" data-value="whatsapp">WhatsApp</span>
+              <span class="chip" data-value="email">E-mail</span>
+              <span class="chip" data-value="ambos">Os dois</span>
+            </div>
           </div>
           <div class="field-g">
-            <div class="f-label">E-mail <span class="req">opcional</span></div>
-            <div class="f-mock">seuemail@exemplo.com</div>
+            <div class="f-label">WhatsApp com DDD <span class="req" id="reqWhats">obrigatório</span></div>
+            <input type="tel" id="fWhatsapp" class="f-mock" placeholder="Ex: (47) 99999-9999 — sem DDD não conseguimos entregar" style="width:100%;font-family:inherit;">
+          </div>
+          <div class="field-g" id="grupoEmail">
+            <div class="f-label">E-mail <span class="req" id="reqEmail">opcional</span></div>
+            <input type="email" id="fEmail" class="f-mock" placeholder="seuemail@exemplo.com" style="width:100%;font-family:inherit;">
           </div>
           <div class="field-g">
             <div class="f-label">Deseja adicionar o miniclipe animado? <span class="req">opcional · +R$ 60,00</span></div>
             <div class="f-hint">A música exclusiva + um miniclipe com essa pessoa como personagem de desenho animado.</div>
-            <div class="chips">
-              <span class="chip">🎬 Sim, quero o miniclipe também</span>
-              <span class="chip on">Só a música por agora</span>
+            <div class="chips" data-group="miniclipe" data-single="true">
+              <span class="chip" data-value="sim">🎬 Sim, quero o miniclipe também</span>
+              <span class="chip on" data-value="nao">Só a música por agora</span>
+            </div>
+          </div>
+          <div class="field-g" id="grupoFoto" style="display:none;">
+            <div class="f-label">Foto da pessoa homenageada <span class="req">obrigatória p/ o miniclipe</span></div>
+            <div class="f-hint">Selfie bem iluminada, rosto visível, de frente — é a base do personagem animado.</div>
+            <input type="file" id="fFoto" accept="image/*" style="width:100%;">
+            <div id="fotoPreviewWrap" style="margin-top:10px;display:none;">
+              <img id="fotoPreview" style="max-width:140px;border:2px solid var(--ink);border-radius:6px;">
             </div>
           </div>
           <div class="field-g">
             <div class="f-label">Algum detalhe que a gente não perguntou?</div>
-            <div class="f-textarea">Referência de músicas que ela ama, instrumentos favoritos, algo sobre a voz, qualquer coisa que ajude a criar o presente perfeito.</div>
+            <textarea id="fObservacoes" class="f-textarea" placeholder="Referência de músicas que ela ama, instrumentos favoritos, algo sobre a voz, qualquer coisa que ajude a criar o presente perfeito."></textarea>
           </div>
           <div class="field-g">
             <div class="f-label">Resumo do seu pedido</div>
@@ -676,9 +691,15 @@
               <div class="s-row"><span class="s-key">Estilo</span><span id="sEstilo">—</span></div>
               <div class="s-row"><span class="s-key">Voz</span><span id="sVoz">Feminina</span></div>
               <div class="s-row"><span class="s-key">Tom</span><span id="sTom">—</span></div>
-              <div class="s-row"><span class="s-key">Entrega</span><span>até 24 horas</span></div>
-              <div class="s-row"><span class="s-key">Valor</span><span style="color:var(--red-dark);font-weight:800;">R$ 37,90</span></div>
+              <div class="s-row"><span class="s-key">Entrega</span><span id="sPrazo">até 24 horas</span></div>
+              <div class="s-row"><span class="s-key">Valor</span><span id="sValor" style="color:var(--red-dark);font-weight:800;">R$ 37,90</span></div>
             </div>
+          </div>
+          <div id="pedidoErro" style="display:none;background:#fde8e4;border:2px solid var(--red-dark);border-radius:8px;padding:14px 16px;margin-top:16px;font-size:0.88rem;font-weight:700;color:var(--red-dark);"></div>
+          <div id="pedidoResultado" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
+            <p style="font-weight:800;margin-bottom:10px;">Pix gerado! Escaneie ou copie o código:</p>
+            <img id="pixQrImg" style="max-width:220px;margin:0 auto 10px;display:block;">
+            <textarea id="pixCopiaCola" readonly style="width:100%;min-height:70px;font-size:0.72rem;font-family:monospace;padding:8px;"></textarea>
           </div>
         </div>
 
@@ -851,14 +872,24 @@
   <div class="wrap">kr.IArt — música personalizada com IA e curadoria real · <a href="#form">Criar música</a></div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 (function(){
+  const SUPABASE_URL = "https://txmkhulfgpkivcugggzf.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4bWtodWxmZ3BraXZjdWdnZ3pmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTMyODUsImV4cCI6MjA5NjE4OTI4NX0.6_2p06RT_3uwNPK_MhBcJebbw1eJ_Hr_x4JgNR14fTc";
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const PRECOS = { padrao: 37.90, expresso: 57.90 };
+  const MINICLIPE_PRECO = 60.00;
+
   const steps   = document.querySelectorAll('.wizard-step');
   const bars    = document.querySelectorAll('.prog-seg');
   const labelEl = document.getElementById('stepLabel');
   const curEl   = document.getElementById('wzCur');
   const backBtn = document.getElementById('wzBack');
   const nextBtn = document.getElementById('wzNext');
+  const erroBox = document.getElementById('pedidoErro');
+  const resultBox = document.getElementById('pedidoResultado');
   const labels  = {
     1:'Etapa 1 · A pessoa',
     2:'Etapa 2 · Estilo e tom',
@@ -867,28 +898,107 @@
   };
   let cur = 1;
   const total = steps.length;
+  let enviando = false;
 
-  function getChipVal(step, labelText){
-    const stepEl = document.querySelector(`.wizard-step[data-step="${step}"]`);
-    if(!stepEl) return '—';
-    const labels = Array.from(stepEl.querySelectorAll('.f-label'));
-    const target = labels.find(l => l.textContent.includes(labelText));
-    if(!target) return '—';
-    const chips = target.closest('.field-g').querySelectorAll('.chip.on');
-    return chips.length ? Array.from(chips).map(c => c.textContent.trim()).join(', ') : '—';
+  function showErro(msg){
+    erroBox.textContent = msg;
+    erroBox.style.display = 'block';
+    erroBox.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function clearErro(){ erroBox.style.display = 'none'; erroBox.textContent = ''; }
+
+  document.querySelectorAll('.chips[data-single="true"]').forEach(group => {
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+        chip.classList.add('on');
+        onFieldChange();
+      });
+    });
+  });
+  document.querySelectorAll('.chips:not([data-single="true"])').forEach(group => {
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => { chip.classList.toggle('on'); onFieldChange(); });
+    });
+  });
+
+  function chipValue(groupName){
+    const group = document.querySelector(`.chips[data-group="${groupName}"]`);
+    if(!group) return null;
+    const active = group.querySelector('.chip.on');
+    if(!active) return null;
+    return active.dataset.value || active.textContent.trim();
+  }
+  function chipLabel(groupName){
+    const group = document.querySelector(`.chips[data-group="${groupName}"]`);
+    if(!group) return '—';
+    const active = group.querySelector('.chip.on');
+    return active ? active.textContent.trim() : '—';
+  }
+
+  function onFieldChange(){
+    const miniclipe = chipValue('miniclipe');
+    document.getElementById('grupoFoto').style.display = miniclipe === 'sim' ? 'block' : 'none';
+
+    const entrega = chipValue('entrega');
+    document.getElementById('reqEmail').textContent = (entrega === 'email' || entrega === 'ambos') ? 'obrigatório' : 'opcional';
+
+    updateSummary();
   }
 
   function updateSummary(){
-    const rel   = getChipVal(1,'Ela é o quê');
-    const occ   = getChipVal(1,'Ocasião');
-    const est   = getChipVal(2,'Estilo musical');
-    const voz   = getChipVal(2,'Voz de quem');
-    const tom   = getChipVal(2,'Tom da letra');
-    document.getElementById('sRelacao').textContent = rel;
-    document.getElementById('sOcasiao').textContent = occ;
-    document.getElementById('sEstilo').textContent  = est;
-    document.getElementById('sVoz').textContent     = voz;
-    document.getElementById('sTom').textContent     = tom;
+    document.getElementById('sRelacao').textContent = chipLabel('relacao');
+    document.getElementById('sOcasiao').textContent = chipLabel('ocasiao');
+    document.getElementById('sEstilo').textContent  = chipLabel('estilo');
+    document.getElementById('sVoz').textContent     = chipLabel('voz');
+    document.getElementById('sTom').textContent     = chipLabel('tom');
+
+    const plano = chipValue('plano') || 'padrao';
+    const miniclipe = chipValue('miniclipe') === 'sim';
+    let valor = PRECOS[plano] || PRECOS.padrao;
+    if(miniclipe) valor += MINICLIPE_PRECO;
+
+    document.getElementById('sPrazo').textContent = plano === 'expresso' ? 'até 6 horas' : 'até 24 horas';
+    document.getElementById('sValor').textContent = 'R$ ' + valor.toFixed(2).replace('.', ',');
+  }
+
+  document.getElementById('fFoto').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const wrap = document.getElementById('fotoPreviewWrap');
+    const img = document.getElementById('fotoPreview');
+    if(file){
+      img.src = URL.createObjectURL(file);
+      wrap.style.display = 'block';
+    } else {
+      wrap.style.display = 'none';
+    }
+  });
+
+  function validarEtapa(n){
+    clearErro();
+    if(n === 1){
+      if(!document.getElementById('fNome').value.trim()){ showErro('Preencha o nome de quem vai receber.'); return false; }
+      if(!chipValue('relacao')){ showErro('Escolha a relação com a pessoa.'); return false; }
+      if(!chipValue('ocasiao')){ showErro('Escolha a ocasião.'); return false; }
+    }
+    if(n === 2){
+      if(!chipValue('estilo')){ showErro('Escolha o estilo musical.'); return false; }
+      if(!chipValue('voz')){ showErro('Escolha a voz.'); return false; }
+      if(!chipValue('tom')){ showErro('Escolha o tom da letra.'); return false; }
+    }
+    if(n === 4){
+      const entrega = chipValue('entrega');
+      const whats = document.getElementById('fWhatsapp').value.trim();
+      const email = document.getElementById('fEmail').value.trim();
+      if(!whats && !email){ showErro('Preencha WhatsApp ou e-mail pra gente conseguir te entregar o pedido.'); return false; }
+      if((entrega === 'email' || entrega === 'ambos') && !email){ showErro('Você escolheu e-mail como entrega — preencha o campo de e-mail.'); return false; }
+      if((entrega === 'whatsapp' || entrega === 'ambos') && !whats){ showErro('Você escolheu WhatsApp como entrega — preencha o campo de WhatsApp.'); return false; }
+      if(chipValue('miniclipe') === 'sim' && !document.getElementById('fFoto').files[0]){
+        showErro('O miniclipe animado precisa de uma foto da pessoa homenageada.');
+        return false;
+      }
+    }
+    return true;
   }
 
   function render(){
@@ -901,27 +1011,112 @@
     if(cur === total) updateSummary();
   }
 
-  nextBtn.addEventListener('click', () => {
+  nextBtn.addEventListener('click', async () => {
+    if(!validarEtapa(cur)) return;
     if(cur < total){
       cur++;
       render();
       document.getElementById('form').scrollIntoView({behavior:'smooth',block:'start'});
     } else {
-      nextBtn.disabled = true;
-      nextBtn.textContent = 'Em breve: pagamento via Pix';
+      if(enviando) return;
+      await enviarPedido();
     }
   });
-  backBtn.addEventListener('click', () => { if(cur > 1){ cur--; render(); } });
+  backBtn.addEventListener('click', () => { if(cur > 1){ clearErro(); cur--; render(); } });
   render();
 
-  // chips toggle
-  document.querySelectorAll('.chips').forEach(group => {
-    group.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => chip.classList.toggle('on'));
-    });
-  });
+  async function enviarPedido(){
+    enviando = true;
+    clearErro();
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Enviando...';
 
-  // reveal
+    try {
+      const plano = chipValue('plano') || 'padrao';
+      const incluiMiniclipe = chipValue('miniclipe') === 'sim';
+      const entrega = chipValue('entrega') || 'whatsapp';
+      let valor = PRECOS[plano] || PRECOS.padrao;
+      if(incluiMiniclipe) valor += MINICLIPE_PRECO;
+
+      let fotoUrl = null;
+      const fotoFile = document.getElementById('fFoto').files[0];
+      if(incluiMiniclipe && fotoFile){
+        const nomeArquivo = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fotoFile.name.split('.').pop()}`;
+        const { error: uploadErr } = await sb.storage.from('fotos-kriart').upload(nomeArquivo, fotoFile);
+        if(uploadErr) throw new Error('Falha ao enviar a foto: ' + uploadErr.message);
+        fotoUrl = `fotos-kriart/${nomeArquivo}`;
+      }
+
+      const pedido = {
+        nome_pessoa: document.getElementById('fNome').value.trim(),
+        relacao: chipValue('relacao'),
+        ocasiao: chipLabel('ocasiao'),
+        estilo_musical: chipLabel('estilo'),
+        voz: chipValue('voz'),
+        tom_letra: chipLabel('tom'),
+        duracao: chipValue('duracao'),
+        qualidades: document.getElementById('fQualidades').value.trim() || null,
+        memoria_especial: document.getElementById('fMemoria').value.trim() || null,
+        apelidos: document.getElementById('fApelidos').value.trim() || null,
+        mensagem_intima: document.getElementById('fMensagemIntima').value.trim() || null,
+        letra_pronta: document.getElementById('fLetraPronta').value.trim() || null,
+        observacoes_extra: document.getElementById('fObservacoes').value.trim() || null,
+        metodo_entrega: entrega,
+        whatsapp: document.getElementById('fWhatsapp').value.trim() || null,
+        email: document.getElementById('fEmail').value.trim() || null,
+        inclui_miniclipe: incluiMiniclipe,
+        foto_url: fotoUrl,
+        plano: plano,
+        valor: valor,
+        status_pagamento: 'aguardando_pagamento',
+      };
+
+      const { data: inserted, error: insertErr } = await sb
+        .from('pedidos_kriart')
+        .insert(pedido)
+        .select('id')
+        .single();
+
+      if(insertErr) throw new Error('Falha ao salvar pedido: ' + insertErr.message);
+
+      const pedidoId = inserted.id;
+      const contato = entrega === 'email' ? pedido.email : pedido.whatsapp;
+
+      const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pedidoId,
+          nomeCliente: pedido.nome_pessoa,
+          metodoEntrega: entrega,
+          contato,
+        }),
+      });
+
+      const pagamentoData = await pagamentoRes.json();
+      if(!pagamentoRes.ok) throw new Error(pagamentoData.error || 'Erro ao gerar o pagamento.');
+
+      if(pagamentoData.qr_code_base64){
+        document.getElementById('pixQrImg').src = 'data:image/png;base64,' + pagamentoData.qr_code_base64;
+        document.getElementById('pixCopiaCola').value = pagamentoData.qr_code || '';
+        resultBox.style.display = 'block';
+        resultBox.scrollIntoView({behavior:'smooth', block:'center'});
+        nextBtn.style.display = 'none';
+        backBtn.style.display = 'none';
+      } else {
+        throw new Error('Pagamento criado mas o QR code do Pix não veio na resposta.');
+      }
+
+    } catch (err) {
+      console.error(err);
+      showErro(err.message || 'Algo deu errado. Tenta de novo em alguns segundos.');
+      nextBtn.disabled = false;
+      nextBtn.textContent = '✓ Ir para pagamento';
+    } finally {
+      enviando = false;
+    }
+  }
+
   const els = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){
     const io = new IntersectionObserver(e => {
@@ -932,7 +1127,6 @@
     els.forEach(el => el.classList.add('in'));
   }
 
-  // video fallback
   document.querySelectorAll('.cel-video').forEach(v => {
     v.addEventListener('error', () => {
       v.style.display = 'none';
