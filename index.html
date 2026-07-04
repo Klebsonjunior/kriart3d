@@ -387,17 +387,27 @@
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
   .reveal.in{opacity:1;transform:none;}
 
-  /* ─── REDIRECT OVERLAY ─── */
+  /* ─── CHECKOUT OVERLAY (brick embutido) ─── */
   .redirect-overlay{
     display:none;position:fixed;inset:0;z-index:999;
     background:rgba(26,18,8,0.85);backdrop-filter:blur(6px);
-    flex-direction:column;align-items:center;justify-content:center;gap:20px;
-    text-align:center;color:var(--paper);
+    flex-direction:column;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto;
   }
   .redirect-overlay.show{display:flex;}
-  .redirect-overlay p{font-size:1.1rem;font-weight:700;max-width:28ch;}
-  .redirect-overlay .spinner{
-    width:48px;height:48px;border:4px solid rgba(245,236,217,0.2);
+  .checkout-box{
+    position:relative;background:var(--paper);color:var(--ink);
+    border-radius:14px;padding:32px 24px;width:100%;max-width:480px;
+    max-height:90vh;overflow-y:auto;text-align:center;
+  }
+  .checkout-close{
+    position:absolute;top:10px;right:14px;background:none;border:none;
+    font-size:1.2rem;cursor:pointer;color:var(--ink);
+  }
+  .checkout-state{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .checkout-state p{font-size:1rem;font-weight:700;max-width:34ch;}
+  .spinner{
+    width:48px;height:48px;border:4px solid rgba(26,18,8,0.15);
     border-top-color:var(--red);border-radius:50%;
     animation:spinnerRot 0.8s linear infinite;
   }
@@ -439,10 +449,38 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </head>
 <body>
 
-<!-- REDIRECT OVERLAY -->
+<!-- CHECKOUT OVERLAY (embutido, sem redirecionar) -->
 <div class="redirect-overlay" id="redirectOverlay">
-  <div class="spinner"></div>
-  <p>Preparando seu pagamento seguro…<br>Você será redirecionado ao Mercado Pago.</p>
+  <div class="checkout-box">
+    <button type="button" class="checkout-close" id="checkoutClose" aria-label="Fechar">✕</button>
+
+    <div id="checkoutLoading" class="checkout-state">
+      <div class="spinner"></div>
+      <p>Preparando seu pagamento seguro…</p>
+    </div>
+
+    <div id="paymentBrickContainer"></div>
+
+    <div id="checkoutPixBox" class="checkout-state" style="display:none;">
+      <p>Escaneie o QR Code ou copie o código Pix. Assim que cair, confirmamos automaticamente.</p>
+      <img id="pixQrImg" alt="QR Code Pix" style="width:220px;height:220px;border-radius:8px;background:#fff;padding:8px;">
+      <textarea id="pixCopiaCola" readonly style="width:100%;max-width:360px;height:70px;font-size:0.75rem;padding:8px;border-radius:6px;border:1.5px solid var(--ink);"></textarea>
+      <button type="button" class="wz-btn next" id="pixCopiarBtn">Copiar código Pix</button>
+      <div class="spinner" style="width:28px;height:28px;border-width:3px;"></div>
+      <p style="font-size:0.85rem;">Aguardando confirmação do pagamento…</p>
+    </div>
+
+    <div id="checkoutSucesso" class="checkout-state" style="display:none;">
+      <p style="font-size:1.4rem;">✅ Pagamento aprovado!</p>
+      <p>Seu pedido já está em produção. Você recebe a música no contato informado.</p>
+    </div>
+
+    <div id="checkoutErro" class="checkout-state" style="display:none;">
+      <p>❌ Não conseguimos aprovar o pagamento.</p>
+      <p id="checkoutErroMsg" style="font-size:0.85rem;"></p>
+      <button type="button" class="wz-btn next" id="checkoutTentarNovamente">Tentar novamente</button>
+    </div>
+  </div>
 </div>
 
 <!-- MARQUEE -->
@@ -1059,11 +1097,18 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 (function(){
   const SUPABASE_URL = "https://txmkhulfgpkivcugggzf.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4bWtodWxmZ3BraXZjdWdnZ3pmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTMyODUsImV4cCI6MjA5NjE4OTI4NX0.6_2p06RT_3uwNPK_MhBcJebbw1eJ_Hr_x4JgNR14fTc";
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Chave PÚBLICA do Mercado Pago (não é segredo, mas troque pela sua em produção).
+  // Painel MP > Seu negócio > Configurações > Credenciais de produção > Public Key
+  const MP_PUBLIC_KEY = "COLOQUE_SUA_PUBLIC_KEY_AQUI";
+  const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'pt-BR' });
+  let paymentBrickController = null;
 
   const PRECOS = { padrao: 37.90, expresso: 57.90 };
   const MINICLIPE_PRECO = 60.00;
@@ -1262,36 +1307,21 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 
       if(insertErr) throw new Error('Falha ao salvar pedido: ' + insertErr.message);
 
-      // Mostra overlay de redirecionamento
-      nextBtn.textContent = 'Redirecionando...';
-      overlay.classList.add('show');
-
-      // Cria preferência no Mercado Pago e obtém init_point
-      const contato = entrega === 'email' ? pedido.email : pedido.whatsapp;
-      const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pedidoId,
-          nomeCliente: pedido.nome_pessoa,
-          metodoEntrega: entrega,
-          contato,
-        }),
-      });
-
-      const pagamentoData = await pagamentoRes.json();
-      if(!pagamentoRes.ok) throw new Error(pagamentoData.error || 'Erro ao gerar o link de pagamento.');
-
-      if(pagamentoData.init_point){
-        // Dispara evento InitiateCheckout no Meta Pixel
-        if(typeof fbq !== 'undefined'){
-          fbq('track', 'InitiateCheckout', { value: valor, currency: 'BRL' });
-        }
-        // Redireciona para o checkout do Mercado Pago
-        window.location.href = pagamentoData.init_point;
-      } else {
-        throw new Error('Link de pagamento não foi gerado. Tente novamente.');
+      // Dispara evento InitiateCheckout no Meta Pixel
+      if(typeof fbq !== 'undefined'){
+        fbq('track', 'InitiateCheckout', { value: valor, currency: 'BRL' });
       }
+
+      const contato = entrega === 'email' ? pedido.email : pedido.whatsapp;
+      const emailPayer = entrega === 'email' && pedido.email ? pedido.email : `pedido_${pedidoId.slice(0,8)}@kriart.com`;
+
+      // Abre o checkout embutido (Payment Brick) — sem sair do site
+      overlay.classList.add('show');
+      await renderPaymentBrick({ pedidoId, valor, emailPayer, contato });
+
+      nextBtn.disabled = false;
+      nextBtn.textContent = '🔒 Ir para pagamento seguro';
+      enviando = false;
 
     } catch (err) {
       console.error(err);
@@ -1302,6 +1332,148 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       enviando = false;
     }
   }
+
+  // ── Checkout embutido (Mercado Pago Payment Brick) ──
+  const elLoading   = document.getElementById('checkoutLoading');
+  const elBrick      = document.getElementById('paymentBrickContainer');
+  const elPixBox     = document.getElementById('checkoutPixBox');
+  const elSucesso    = document.getElementById('checkoutSucesso');
+  const elErro       = document.getElementById('checkoutErro');
+  const elErroMsg    = document.getElementById('checkoutErroMsg');
+  const btnClose     = document.getElementById('checkoutClose');
+  const btnTentarDeNovo = document.getElementById('checkoutTentarNovamente');
+  const btnCopiarPix = document.getElementById('pixCopiarBtn');
+
+  let pixPollingId = null;
+  let checkoutCtx  = null; // guarda { pedidoId, valor, emailPayer, contato } da última tentativa
+
+  function esconderTodosEstados(){
+    elLoading.style.display = 'none';
+    elBrick.style.display = 'none';
+    elPixBox.style.display = 'none';
+    elSucesso.style.display = 'none';
+    elErro.style.display = 'none';
+  }
+
+  async function renderPaymentBrick(ctx){
+    checkoutCtx = ctx;
+    esconderTodosEstados();
+    elLoading.style.display = 'flex';
+
+    if(paymentBrickController){
+      try { await paymentBrickController.unmount(); } catch(_){}
+      paymentBrickController = null;
+    }
+    elBrick.innerHTML = '';
+
+    const settings = {
+      initialization: {
+        amount: ctx.valor,
+        payer: { email: ctx.emailPayer },
+      },
+      customization: {
+        paymentMethods: {
+          creditCard: 'all',
+          debitCard: 'all',
+          bankTransfer: 'all', // pix
+          maxInstallments: 3,
+        },
+      },
+      callbacks: {
+        onReady: () => {
+          elLoading.style.display = 'none';
+          elBrick.style.display = 'block';
+        },
+        onSubmit: ({ selectedPaymentMethod, formData }) => {
+          return processarPagamento(ctx.pedidoId, formData);
+        },
+        onError: (error) => {
+          console.error('Erro no Brick:', error);
+        },
+      },
+    };
+
+    const bricksBuilder = mp.bricks();
+    paymentBrickController = await bricksBuilder.create('payment', 'paymentBrickContainer', settings);
+  }
+
+  async function processarPagamento(pedidoId, formData){
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/processar-pagamento-kriart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pedidoId, ...formData }),
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Erro ao processar pagamento.');
+
+    if(data.status === 'approved'){
+      mostrarSucesso();
+    } else if(data.status === 'pending' || data.status === 'in_process'){
+      if(data.qr_code_base64){
+        mostrarPix(data);
+      } else {
+        // boleto ou outro método pendente sem QR — trata como pendente genérico
+        mostrarSucesso('Pagamento em análise. Você recebe a confirmação em breve.');
+      }
+    } else {
+      mostrarErroCheckout('Pagamento recusado. Tente outro cartão ou use o Pix.');
+      throw new Error('rejected'); // Brick precisa que onSubmit rejeite a Promise em caso de falha
+    }
+    return data;
+  }
+
+  function mostrarPix(data){
+    esconderTodosEstados();
+    elPixBox.style.display = 'flex';
+    document.getElementById('pixQrImg').src = `data:image/png;base64,${data.qr_code_base64}`;
+    document.getElementById('pixCopiaCola').value = data.qr_code || '';
+
+    if(pixPollingId) clearInterval(pixPollingId);
+    pixPollingId = setInterval(async () => {
+      try {
+        const r = await fetch(`${SUPABASE_URL}/functions/v1/verificar-pagamento-kriart`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pedidoId: checkoutCtx.pedidoId }),
+        });
+        const d = await r.json();
+        if(d.status === 'approved'){
+          clearInterval(pixPollingId);
+          mostrarSucesso();
+        }
+      } catch(_){}
+    }, 5000);
+  }
+
+  function mostrarSucesso(msg){
+    if(pixPollingId) clearInterval(pixPollingId);
+    esconderTodosEstados();
+    elSucesso.style.display = 'flex';
+    if(msg) elSucesso.querySelector('p:last-child').textContent = msg;
+  }
+
+  function mostrarErroCheckout(msg){
+    esconderTodosEstados();
+    elErro.style.display = 'flex';
+    elErroMsg.textContent = msg || '';
+  }
+
+  btnClose?.addEventListener('click', () => {
+    if(pixPollingId) clearInterval(pixPollingId);
+    overlay.classList.remove('show');
+  });
+
+  btnTentarDeNovo?.addEventListener('click', () => {
+    if(checkoutCtx) renderPaymentBrick(checkoutCtx);
+  });
+
+  btnCopiarPix?.addEventListener('click', () => {
+    const campo = document.getElementById('pixCopiaCola');
+    campo.select();
+    navigator.clipboard?.writeText(campo.value);
+    btnCopiarPix.textContent = 'Copiado!';
+    setTimeout(() => { btnCopiarPix.textContent = 'Copiar código Pix'; }, 2000);
+  });
 
   // ── Reveal on scroll ──
   const els = document.querySelectorAll('.reveal');
