@@ -151,6 +151,17 @@
   .vc-label .hand{font-size:1.1rem;color:var(--red-dark);}
   .vc-label .sub{font-size:0.73rem;color:var(--ink-soft);margin-top:2px;font-weight:600;}
 
+  /* ─── EXEMPLOS ─── */
+  .examples{padding:80px 0;border-bottom:2px solid var(--ink);background:var(--paper-3);}
+  .ex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px;}
+  .ex-card{border:2px solid var(--ink);background:var(--paper-2);box-shadow:6px 6px 0 var(--ink);border-radius:6px;overflow:hidden;}
+  .wave-wrap{position:relative;cursor:pointer;}
+  .ex-progress{position:absolute;top:0;right:0;bottom:0;width:100%;background:var(--paper-2);pointer-events:none;transition:width 0.1s linear;}
+  .ex-card:not(.playing) .wave-bars span{animation:none;opacity:0.35;transform:scaleY(0.3);}
+  @media (max-width:900px){
+    .ex-grid{grid-template-columns:1fr;}
+  }
+
   /* ─── HOW ─── */
   .how{padding:88px 0;position:relative;overflow:hidden;border-bottom:2px solid var(--ink);}
   .how-deco-1{top:20px;left:0;opacity:0.07;}
@@ -481,6 +492,92 @@
   </div>
 </section>
 
+<!-- EXEMPLOS REAIS -->
+<section class="examples" id="exemplos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">♩ Prova real</div>
+      <h2>Músicas que já entregamos</h2>
+      <p>Sem exemplo fake — toca e ouve como ficou de verdade.</p>
+    </div>
+    <div class="ex-grid">
+
+      <div class="ex-card">
+        <div class="vc-top">
+          <div class="vinyl-disc"></div>
+          <div class="vc-meta">
+            <div class="song-name">Miguel, Meu Campeão</div>
+            <div class="for-who">de: Miguel · filho · mpb</div>
+          </div>
+        </div>
+        <div class="vc-waveform">
+          <div class="wave-wrap">
+            <div class="wave-bars">
+              <span class="dark" style="height:18%"></span><span class="red" style="height:55%"></span><span class="dark" style="height:80%"></span><span class="dark" style="height:45%"></span><span class="red" style="height:90%"></span><span class="dark" style="height:38%"></span><span class="dark" style="height:70%"></span><span class="red" style="height:55%"></span><span class="dark" style="height:85%"></span><span class="dark" style="height:40%"></span><span class="red" style="height:75%"></span><span class="dark" style="height:60%"></span><span class="dark" style="height:30%"></span><span class="red" style="height:88%"></span><span class="dark" style="height:50%"></span><span class="dark" style="height:95%"></span><span class="red" style="height:42%"></span><span class="dark" style="height:68%"></span><span class="dark" style="height:78%"></span><span class="red" style="height:35%"></span><span class="dark" style="height:82%"></span><span class="dark" style="height:52%"></span><span class="red" style="height:65%"></span><span class="dark" style="height:48%"></span>
+            </div>
+            <div class="ex-progress"></div>
+          </div>
+        </div>
+        <div class="vc-controls">
+          <div class="time ex-current">0:00</div>
+          <div class="play-btn ex-play">▶</div>
+          <div class="time ex-duration">--:--</div>
+        </div>
+        <audio class="ex-audio" preload="metadata" src="Miguel%20meu%20campe%C3%A3o%20%281%29.mp3"></audio>
+      </div>
+
+      <div class="ex-card">
+        <div class="vc-top">
+          <div class="vinyl-disc"></div>
+          <div class="vc-meta">
+            <div class="song-name">Maristela, Minha Mãe</div>
+            <div class="for-who">de: Maristela · mãe · sertanejo</div>
+          </div>
+        </div>
+        <div class="vc-waveform">
+          <div class="wave-wrap">
+            <div class="wave-bars">
+              <span class="dark" style="height:30%"></span><span class="red" style="height:62%"></span><span class="dark" style="height:44%"></span><span class="dark" style="height:88%"></span><span class="red" style="height:50%"></span><span class="dark" style="height:72%"></span><span class="dark" style="height:36%"></span><span class="red" style="height:80%"></span><span class="dark" style="height:58%"></span><span class="dark" style="height:92%"></span><span class="red" style="height:40%"></span><span class="dark" style="height:66%"></span><span class="dark" style="height:28%"></span><span class="red" style="height:84%"></span><span class="dark" style="height:54%"></span><span class="dark" style="height:76%"></span><span class="red" style="height:46%"></span><span class="dark" style="height:90%"></span><span class="dark" style="height:38%"></span><span class="red" style="height:70%"></span><span class="dark" style="height:60%"></span><span class="dark" style="height:34%"></span><span class="red" style="height:86%"></span><span class="dark" style="height:48%"></span>
+            </div>
+            <div class="ex-progress"></div>
+          </div>
+        </div>
+        <div class="vc-controls">
+          <div class="time ex-current">0:00</div>
+          <div class="play-btn ex-play">▶</div>
+          <div class="time ex-duration">--:--</div>
+        </div>
+        <audio class="ex-audio" preload="metadata" src="Maristela%2C%20Minha%20M%C3%A3e.mp3"></audio>
+      </div>
+
+      <div class="ex-card">
+        <div class="vc-top">
+          <div class="vinyl-disc"></div>
+          <div class="vc-meta">
+            <div class="song-name">Mônica, Ô Mônica</div>
+            <div class="for-who">de: Mônica · namorada · pop</div>
+          </div>
+        </div>
+        <div class="vc-waveform">
+          <div class="wave-wrap">
+            <div class="wave-bars">
+              <span class="dark" style="height:52%"></span><span class="red" style="height:38%"></span><span class="dark" style="height:76%"></span><span class="dark" style="height:60%"></span><span class="red" style="height:34%"></span><span class="dark" style="height:86%"></span><span class="dark" style="height:48%"></span><span class="red" style="height:90%"></span><span class="dark" style="height:70%"></span><span class="dark" style="height:40%"></span><span class="red" style="height:84%"></span><span class="dark" style="height:28%"></span><span class="dark" style="height:66%"></span><span class="red" style="height:92%"></span><span class="dark" style="height:36%"></span><span class="dark" style="height:80%"></span><span class="red" style="height:58%"></span><span class="dark" style="height:44%"></span><span class="dark" style="height:88%"></span><span class="red" style="height:50%"></span><span class="dark" style="height:72%"></span><span class="dark" style="height:30%"></span><span class="red" style="height:62%"></span><span class="dark" style="height:55%"></span>
+            </div>
+            <div class="ex-progress"></div>
+          </div>
+        </div>
+        <div class="vc-controls">
+          <div class="time ex-current">0:00</div>
+          <div class="play-btn ex-play">▶</div>
+          <div class="time ex-duration">--:--</div>
+        </div>
+        <audio class="ex-audio" preload="metadata" src="M%C3%B4nica%2C%20%C3%B4%20M%C3%B4nica.mp3"></audio>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FORM -->
 <section class="formsec" id="form">
   <div class="deco formsec-deco-1"><svg width="150" height="150" viewBox="0 0 150 150"><path d="M75 140 C75 140 10 104 10 52 C10 24 27 6 50 6 C62 6 70 11 75 18 C80 11 88 6 100 6 C123 6 140 24 140 52 C140 104 75 140 75 140Z" fill="#C8432B"/></svg></div>
@@ -597,14 +694,6 @@
               <span class="chip">Saudosista / nostálgico</span>
               <span class="chip">Animado / festivo</span>
               <span class="chip">Sem preferência</span>
-            </div>
-          </div>
-          <div class="field-g">
-            <div class="f-label">Duração aproximada</div>
-            <div class="chips" data-group="duracao" data-single="true">
-              <span class="chip on" data-value="curta">Curta (~1 min)</span>
-              <span class="chip" data-value="media">Média (~2 min)</span>
-              <span class="chip" data-value="completa">Completa (~3 min)</span>
             </div>
           </div>
         </div>
@@ -1057,7 +1146,6 @@
         estilo_musical: chipLabel('estilo'),
         voz: chipValue('voz'),
         tom_letra: chipLabel('tom'),
-        duracao: chipValue('duracao'),
         qualidades: document.getElementById('fQualidades').value.trim() || null,
         memoria_especial: document.getElementById('fMemoria').value.trim() || null,
         apelidos: document.getElementById('fApelidos').value.trim() || null,
@@ -1131,6 +1219,67 @@
     v.addEventListener('error', () => {
       v.style.display = 'none';
       if(v.nextElementSibling) v.nextElementSibling.style.display = 'flex';
+    });
+  });
+
+  // ── Players reais dos exemplos ──
+  function fmtTime(s){
+    if(!isFinite(s) || s < 0) return '0:00';
+    const m = Math.floor(s/60);
+    const sec = Math.floor(s%60).toString().padStart(2,'0');
+    return `${m}:${sec}`;
+  }
+  document.querySelectorAll('.ex-card').forEach(card => {
+    const audio = card.querySelector('.ex-audio');
+    const btn = card.querySelector('.ex-play');
+    const curEl = card.querySelector('.ex-current');
+    const durEl = card.querySelector('.ex-duration');
+    const progress = card.querySelector('.ex-progress');
+    const waveWrap = card.querySelector('.wave-wrap');
+    if(!audio) return;
+
+    audio.addEventListener('loadedmetadata', () => { durEl.textContent = fmtTime(audio.duration); });
+    audio.addEventListener('timeupdate', () => {
+      curEl.textContent = fmtTime(audio.currentTime);
+      const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      progress.style.width = (100 - pct) + '%';
+    });
+    audio.addEventListener('ended', () => {
+      card.classList.remove('playing');
+      btn.textContent = '▶';
+    });
+    audio.addEventListener('error', () => {
+      durEl.textContent = 'erro';
+      btn.style.opacity = '0.4';
+      btn.style.pointerEvents = 'none';
+    });
+
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.ex-card').forEach(c => {
+        if(c !== card){
+          const a = c.querySelector('.ex-audio');
+          if(a) a.pause();
+          c.classList.remove('playing');
+          const b = c.querySelector('.ex-play');
+          if(b) b.textContent = '▶';
+        }
+      });
+      if(audio.paused){
+        audio.play();
+        card.classList.add('playing');
+        btn.textContent = '❚❚';
+      } else {
+        audio.pause();
+        card.classList.remove('playing');
+        btn.textContent = '▶';
+      }
+    });
+
+    waveWrap.addEventListener('click', (e) => {
+      if(!audio.duration) return;
+      const rect = waveWrap.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = ratio * audio.duration;
     });
   });
 })();
