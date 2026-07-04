@@ -47,7 +47,6 @@
   .deco{position:absolute;pointer-events:none;z-index:0;}
   .deco svg{display:block;}
 
-  /* ─── NAV ─── */
   /* ─── WHATSAPP FLUTUANTE ─── */
   .wa-float{
     position:fixed;
@@ -343,7 +342,6 @@
   .p-head h3{font-size:1.12rem;margin-bottom:4px;}
   .p-head .sub{font-size:0.84rem;opacity:0.8;font-weight:600;}
   .price-row{display:flex;align-items:baseline;gap:10px;margin-top:14px;flex-wrap:wrap;}
-  .old-p{font-size:1.05rem;font-weight:700;color:var(--ink-soft);opacity:0.55;text-decoration:line-through;}
   .old-p{font-size:0.92rem;text-decoration:line-through;opacity:0.5;}
   .new-p{font-family:'Fraunces',serif;font-size:2.3rem;font-weight:500;}
   .p-body{padding:26px 28px 30px;}
@@ -389,6 +387,22 @@
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
   .reveal.in{opacity:1;transform:none;}
 
+  /* ─── REDIRECT OVERLAY ─── */
+  .redirect-overlay{
+    display:none;position:fixed;inset:0;z-index:999;
+    background:rgba(26,18,8,0.85);backdrop-filter:blur(6px);
+    flex-direction:column;align-items:center;justify-content:center;gap:20px;
+    text-align:center;color:var(--paper);
+  }
+  .redirect-overlay.show{display:flex;}
+  .redirect-overlay p{font-size:1.1rem;font-weight:700;max-width:28ch;}
+  .redirect-overlay .spinner{
+    width:48px;height:48px;border:4px solid rgba(245,236,217,0.2);
+    border-top-color:var(--red);border-radius:50%;
+    animation:spinnerRot 0.8s linear infinite;
+  }
+  @keyframes spinnerRot{to{transform:rotate(360deg);}}
+
   @media(max-width:900px){
     .hero-inner{grid-template-columns:1fr;gap:44px;}
     .steps-list{grid-template-columns:1fr;}
@@ -424,6 +438,12 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 </head>
 <body>
+
+<!-- REDIRECT OVERLAY -->
+<div class="redirect-overlay" id="redirectOverlay">
+  <div class="spinner"></div>
+  <p>Preparando seu pagamento seguro…<br>Você será redirecionado ao Mercado Pago.</p>
+</div>
 
 <!-- MARQUEE -->
 <div class="promo-marquee">
@@ -819,13 +839,6 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
             <textarea id="fObservacoes" class="f-textarea" placeholder="Referência de músicas que ela ama, instrumentos favoritos, algo sobre a voz, qualquer coisa que ajude a criar o presente perfeito."></textarea>
           </div>
           <div class="field-g">
-            <div class="f-label">Forma de pagamento</div>
-            <div class="chips" data-group="metodo-pagamento" data-single="true">
-              <span class="chip on" data-value="pix">Pix</span>
-              <span class="chip" data-value="cartao">Cartão de crédito</span>
-            </div>
-          </div>
-          <div class="field-g">
             <div class="f-label">Resumo do seu pedido</div>
             <div class="summary-box" id="summaryBox">
               <div class="s-row"><span class="s-key">Relação</span><span id="sRelacao">—</span></div>
@@ -838,19 +851,6 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
             </div>
           </div>
           <div id="pedidoErro" style="display:none;background:#fde8e4;border:2px solid var(--red-dark);border-radius:8px;padding:14px 16px;margin-top:16px;font-size:0.88rem;font-weight:700;color:var(--red-dark);"></div>
-          <div id="pedidoResultado" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
-            <p style="font-weight:800;margin-bottom:10px;">Pix gerado! Escaneie ou copie o código:</p>
-            <img id="pixQrImg" style="max-width:220px;margin:0 auto 10px;display:block;">
-            <textarea id="pixCopiaCola" readonly style="width:100%;min-height:70px;font-size:0.72rem;font-family:monospace;padding:8px;"></textarea>
-            <p id="pixAguardando" style="margin-top:12px;font-size:0.8rem;font-weight:700;opacity:0.7;">⏳ Aguardando confirmação do pagamento...</p>
-          </div>
-          <div id="cardBrickContainer" style="display:none;margin-top:20px;"></div>
-          <div id="cartaoAprovado" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
-            <p style="font-weight:800;">✓ Pagamento aprovado! Seu pedido já está na fila de produção.</p>
-          </div>
-          <div id="cartaoPendente" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
-            <p style="font-weight:800;">Pagamento em análise. Você recebe a confirmação assim que for aprovado.</p>
-          </div>
         </div>
 
         <div class="wz-nav">
@@ -968,7 +968,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         </div>
       </div>
     </div>
-    <p class="price-note">Pagamento via Pix ou cartão de crédito. Pedido entra na produção após confirmação do pagamento.</p>
+    <p class="price-note">Pagamento via Pix, cartão ou outro método disponível no Mercado Pago.</p>
   </div>
 </section>
 
@@ -1003,7 +1003,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       </details>
       <details class="faq-item">
         <summary>Como é feito o pagamento? <span class="plus">+</span></summary>
-        <p>Via Pix ou cartão de crédito, direto no site. Após o envio do formulário, você escolhe a forma de pagamento — no Pix, recebe o QR code na hora; no cartão, o pagamento é processado ali mesmo. O pedido entra na produção após a confirmação.</p>
+        <p>Ao finalizar o pedido, você é redirecionado ao checkout seguro do Mercado Pago — lá você escolhe entre Pix, cartão de crédito ou outros métodos disponíveis. O pedido entra na produção após a confirmação do pagamento.</p>
       </details>
     </div>
   </div>
@@ -1059,7 +1059,6 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 (function(){
   const SUPABASE_URL = "https://txmkhulfgpkivcugggzf.supabase.co";
@@ -1076,7 +1075,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
   const backBtn = document.getElementById('wzBack');
   const nextBtn = document.getElementById('wzNext');
   const erroBox = document.getElementById('pedidoErro');
-  const resultBox = document.getElementById('pedidoResultado');
+  const overlay = document.getElementById('redirectOverlay');
   const labels  = {
     1:'Etapa 1 · A pessoa',
     2:'Etapa 2 · Estilo e tom',
@@ -1101,11 +1100,6 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         chip.classList.add('on');
         onFieldChange();
       });
-    });
-  });
-  document.querySelectorAll('.chips:not([data-single="true"])').forEach(group => {
-    group.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => { chip.classList.toggle('on'); onFieldChange(); });
     });
   });
 
@@ -1194,7 +1188,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     labelEl.textContent = labels[cur];
     curEl.textContent   = cur;
     backBtn.classList.toggle('show', cur > 1);
-    nextBtn.textContent = cur === total ? '✓ Ir para pagamento' : 'Próximo →';
+    nextBtn.textContent = cur === total ? '🔒 Ir para pagamento seguro' : 'Próximo →';
     if(cur === total) updateSummary();
   }
 
@@ -1216,7 +1210,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     enviando = true;
     clearErro();
     nextBtn.disabled = true;
-    nextBtn.textContent = 'Enviando...';
+    nextBtn.textContent = 'Salvando pedido...';
 
     try {
       const plano = chipValue('plano') || 'padrao';
@@ -1227,6 +1221,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 
       const pedidoId = crypto.randomUUID();
 
+      // Upload da foto, se houver
       let fotoUrl = null;
       const fotoFile = document.getElementById('fFoto').files[0];
       if(incluiMiniclipe && fotoFile){
@@ -1236,6 +1231,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         fotoUrl = `fotos-kriart/${nomeArquivo}`;
       }
 
+      // Salva pedido no Supabase
       const pedido = {
         id: pedidoId,
         nome_pessoa: document.getElementById('fNome').value.trim(),
@@ -1266,18 +1262,12 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 
       if(insertErr) throw new Error('Falha ao salvar pedido: ' + insertErr.message);
 
+      // Mostra overlay de redirecionamento
+      nextBtn.textContent = 'Redirecionando...';
+      overlay.classList.add('show');
+
+      // Cria preferência no Mercado Pago e obtém init_point
       const contato = entrega === 'email' ? pedido.email : pedido.whatsapp;
-      const metodoPagamento = chipValue('metodo-pagamento') || 'pix';
-
-      if(metodoPagamento === 'cartao'){
-        nextBtn.style.display = 'none';
-        backBtn.style.display = 'none';
-        document.getElementById('cardBrickContainer').style.display = 'block';
-        await montarCardBrick(pedidoId, pedido.nome_pessoa, entrega, contato, valor);
-        enviando = false;
-        return;
-      }
-
       const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1290,124 +1280,30 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       });
 
       const pagamentoData = await pagamentoRes.json();
-      if(!pagamentoRes.ok) throw new Error(pagamentoData.error || 'Erro ao gerar o pagamento.');
+      if(!pagamentoRes.ok) throw new Error(pagamentoData.error || 'Erro ao gerar o link de pagamento.');
 
-      if(pagamentoData.qr_code_base64){
-        document.getElementById('pixQrImg').src = 'data:image/png;base64,' + pagamentoData.qr_code_base64;
-        document.getElementById('pixCopiaCola').value = pagamentoData.qr_code || '';
-        resultBox.style.display = 'block';
-        resultBox.scrollIntoView({behavior:'smooth', block:'center'});
-        nextBtn.style.display = 'none';
-        backBtn.style.display = 'none';
-        iniciarPollingPix(pedidoId);
+      if(pagamentoData.init_point){
+        // Dispara evento InitiateCheckout no Meta Pixel
+        if(typeof fbq !== 'undefined'){
+          fbq('track', 'InitiateCheckout', { value: valor, currency: 'BRL' });
+        }
+        // Redireciona para o checkout do Mercado Pago
+        window.location.href = pagamentoData.init_point;
       } else {
-        throw new Error('Pagamento criado mas o QR code do Pix não veio na resposta.');
+        throw new Error('Link de pagamento não foi gerado. Tente novamente.');
       }
 
     } catch (err) {
       console.error(err);
+      overlay.classList.remove('show');
       showErro(err.message || 'Algo deu errado. Tenta de novo em alguns segundos.');
       nextBtn.disabled = false;
-      nextBtn.textContent = '✓ Ir para pagamento';
-    } finally {
+      nextBtn.textContent = '🔒 Ir para pagamento seguro';
       enviando = false;
     }
   }
 
-  let cardBrickController = null;
-  async function montarCardBrick(pedidoId, nomeCliente, entrega, contato, valor){
-    try {
-      const mp = new MercadoPago('APP_USR-af110a67-2e22-4878-b095-12d61b78c86a', { locale: 'pt-BR' });
-      const bricksBuilder = mp.bricks();
-      if(cardBrickController){ await cardBrickController.unmount(); }
-      cardBrickController = await bricksBuilder.create('cardPayment', 'cardBrickContainer', {
-        initialization: { amount: valor },
-        customization: {
-          visual: { style: { theme: 'bootstrap' } },
-        },
-        callbacks: {
-          onReady: () => {},
-          onError: (error) => {
-            console.error('Erro no Brick de cartão:', error);
-            showErro('Erro no formulário de cartão. Verifique os dados e tente novamente.');
-          },
-          onSubmit: (cardFormData) => {
-            return new Promise(async (resolve, reject) => {
-              try {
-                const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    pedidoId,
-                    nomeCliente,
-                    metodoEntrega: entrega,
-                    contato,
-                    paymentData: cardFormData,
-                  }),
-                });
-                const pagamentoData = await pagamentoRes.json();
-                if(!pagamentoRes.ok) throw new Error(pagamentoData.error || 'Erro ao processar o pagamento.');
-
-                if(pagamentoData.status === 'approved'){
-                  document.getElementById('cardBrickContainer').style.display = 'none';
-                  const ok = document.getElementById('cartaoAprovado');
-                  ok.style.display = 'block';
-                  ok.scrollIntoView({behavior:'smooth', block:'center'});
-                } else if(pagamentoData.status === 'in_process' || pagamentoData.status === 'pending'){
-                  document.getElementById('cardBrickContainer').style.display = 'none';
-                  const pend = document.getElementById('cartaoPendente');
-                  pend.style.display = 'block';
-                  pend.scrollIntoView({behavior:'smooth', block:'center'});
-                } else {
-                  throw new Error('Pagamento recusado (' + (pagamentoData.status_detail || pagamentoData.status) + '). Tente outro cartão.');
-                }
-                resolve();
-              } catch (err) {
-                showErro(err.message || 'Erro ao processar pagamento com cartão.');
-                reject();
-              }
-            });
-          },
-        },
-      });
-    } catch (err) {
-      console.error('Erro ao montar Brick:', err);
-      showErro('Não foi possível carregar o formulário de cartão. Tente novamente ou use Pix.');
-    }
-  }
-
-  let pixPollingInterval = null;
-  function iniciarPollingPix(pedidoId){
-    if(pixPollingInterval) clearInterval(pixPollingInterval);
-    let tentativas = 0;
-    const MAX_TENTATIVAS = 240; // 240 x 5s = 20 minutos
-    pixPollingInterval = setInterval(async () => {
-      tentativas++;
-      if(tentativas > MAX_TENTATIVAS){
-        clearInterval(pixPollingInterval);
-        document.getElementById('pixAguardando').textContent = 'Ainda não recebemos a confirmação. Se você já pagou, chama no WhatsApp que confirmamos manualmente.';
-        return;
-      }
-      try {
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/verificar-pagamento-kriart`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pedidoId }),
-        });
-        const data = await res.json();
-        if(data.status === 'approved'){
-          clearInterval(pixPollingInterval);
-          resultBox.style.display = 'none';
-          const ok = document.getElementById('cartaoAprovado');
-          ok.style.display = 'block';
-          ok.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-      } catch(err){
-        console.error('Erro ao verificar pagamento Pix:', err);
-      }
-    }, 5000);
-  }
-
+  // ── Reveal on scroll ──
   const els = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){
     const io = new IntersectionObserver(e => {
@@ -1418,6 +1314,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     els.forEach(el => el.classList.add('in'));
   }
 
+  // ── Miniclipe video ──
   document.querySelectorAll('.cel-video').forEach(v => {
     v.addEventListener('error', () => {
       const wrap = v.closest('.cel-video-wrap') || v;
@@ -1426,7 +1323,6 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     });
   });
 
-  // ── Play manual do miniclipe (com áudio) ──
   const miniVideo = document.getElementById('miniclipeVideo');
   const miniBtn = document.getElementById('miniclipePlayBtn');
   if(miniVideo && miniBtn){
@@ -1442,7 +1338,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
     });
   }
 
-  // ── Players reais dos exemplos ──
+  // ── Players dos exemplos ──
   function fmtTime(s){
     if(!isFinite(s) || s < 0) return '0:00';
     const m = Math.floor(s/60);
@@ -1508,7 +1404,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 <!-- WHATSAPP FLUTUANTE -->
 <a href="https://wa.me/5547997605014?text=Oi!%20Tenho%20uma%20d%C3%BAvida%20sobre%20a%20m%C3%BAsica%20personalizada%20do%20kr.IArt."
    class="wa-float" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-  <svg viewBox="0 0 24 24" width="30" height="30" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.02 2C6.5 2 2 6.477 2 11.99c0 1.99.573 3.845 1.55 5.408L2 22l4.75-1.512A9.98 9.98 0 0 0 12.02 22C17.54 22 22 17.523 22 12.01 22 6.477 17.54 2 12.02 2zm0 18.15c-1.68 0-3.24-.47-4.57-1.29l-.328-.198-3.09.98.99-3.014-.213-.31A8.14 8.14 0 0 1 3.85 11.99c0-4.5 3.665-8.15 8.17-8.15 4.505 0 8.17 3.65 8.17 8.15 0 4.502-3.665 8.16-8.17 8.16z"/></svg>
+  <svg viewBox="0 0 24 24" width="30" height="30" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.02 2C6.5 2 2 6.477 2 11.99c0 1.99.573 3.845 1.55 5.408L2 22l4.75-1.512A9.98 9.98 0 0 0 12.02 22C17.54 22 17.54 17.523 22 12.01 22 6.477 17.54 2 12.02 2zm0 18.15c-1.68 0-3.24-.47-4.57-1.29l-.328-.198-3.09.98.99-3.014-.213-.31A8.14 8.14 0 0 1 3.85 11.99c0-4.5 3.665-8.15 8.17-8.15 4.505 0 8.17 3.65 8.17 8.15 0 4.502-3.665 8.16-8.17 8.16z"/></svg>
 </a>
 
 </body>
