@@ -297,6 +297,16 @@
   .cel-bar .hand{font-size:1.05rem;color:var(--gold);}
   .cel-bar .num{font-size:0.68rem;letter-spacing:0.06em;color:rgba(245,236,217,0.45);}
   .cel-video{width:100%;aspect-ratio:9/13;object-fit:cover;display:block;background:#1a1410;}
+  .cel-video-wrap{position:relative;}
+  .cel-play-btn{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:var(--red);color:var(--paper);border:2px solid var(--paper);border-radius:999px;
+    padding:12px 22px;font-size:0.85rem;font-weight:800;cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,0.4);display:flex;align-items:center;gap:8px;
+    transition:transform 0.15s ease, background 0.15s ease;white-space:nowrap;
+  }
+  .cel-play-btn:hover{background:var(--red-dark);transform:translate(-50%,-50%) scale(1.05);}
+  .cel-play-btn.hidden{display:none;}
   .cel-video-placeholder{width:100%;aspect-ratio:9/13;background:#1a1410;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
   .cel-video-placeholder .anim-icon{font-size:3rem;animation:floatA 3s ease-in-out infinite;}
   .cel-video-placeholder .anim-label{font-size:0.72rem;color:rgba(245,236,217,0.4);letter-spacing:0.06em;text-transform:uppercase;font-weight:700;}
@@ -833,7 +843,10 @@
               <span class="hand">cena final — sorriso</span>
               <span class="num">CENA 04/04</span>
             </div>
-            <video class="cel-video" src="miniclipe-demo.mp4" autoplay muted loop playsinline></video>
+            <div class="cel-video-wrap">
+              <video class="cel-video" id="miniclipeVideo" src="miniclipe-demo.mp4" poster="miniclipe-poster.jpg" playsinline preload="metadata"></video>
+              <button class="cel-play-btn" id="miniclipePlayBtn" aria-label="Assistir com áudio">▶ ouvir com áudio</button>
+            </div>
             <div class="cel-video-placeholder" style="display:none;">
               <div class="anim-icon">🎬</div>
               <div class="anim-label">miniclipe animado</div>
@@ -957,8 +970,41 @@
   </div>
 </section>
 
+<!-- PRIVACIDADE -->
+<section class="faq" id="privacidade" style="border-top:2px solid var(--ink);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">🔒 Seus dados</div>
+      <h2>Política de privacidade</h2>
+      <p>Como tratamos as informações que você compartilha pra criar sua música.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Quem é o responsável pelos seus dados? <span class="plus">+</span></summary>
+        <p>O tratamento dos dados coletados neste site é feito pela <strong>kr.IArt</strong>. Dúvidas, solicitações ou reclamações sobre seus dados: WhatsApp <strong>(47) 99760-5014</strong>.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Quais dados coletamos e pra quê? <span class="plus">+</span></summary>
+        <p>Coletamos o nome da pessoa homenageada, sua relação com ela, estilo musical, tipo de voz, história, apelidos e mensagens que você escrever, foto (se enviada) e seu WhatsApp/e-mail de contato. Usamos isso exclusivamente pra compor a música do seu pedido e entregá-la a você. A base legal é a execução do contrato firmado ao comprar (art. 7º, V da LGPD); dados sensíveis que você opte por compartilhar na história (ex: saúde, religião) são tratados com base no seu consentimento explícito ao preenchê-los voluntariamente.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Com quem seus dados são compartilhados? <span class="plus">+</span></summary>
+        <p>Com prestadores que operam a estrutura do serviço: Supabase (armazenamento e banco de dados), Mercado Pago (processamento de pagamento) e WhatsApp/e-mail (entrega do pedido). Não vendemos nem compartilhamos seus dados com terceiros pra fins de marketing.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Por quanto tempo guardamos seus dados? <span class="plus">+</span></summary>
+        <p>Dados pessoais do pedido (história, apelidos, mensagens, foto) ficam armazenados pelo tempo necessário pra produção e entrega, e são removidos mediante sua solicitação — atendemos em até 5 dias úteis pelo WhatsApp acima. Dados de pagamento e informações fiscais da venda são mantidos por prazo legal obrigatório perante a Receita Federal, independente de pedido de exclusão dos demais dados.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Quais são os seus direitos? <span class="plus">+</span></summary>
+        <p>Conforme a LGPD (Lei 13.709/2018), você pode solicitar a qualquer momento: acesso aos dados que temos sobre você, correção de dados incorretos, exclusão dos dados pessoais do seu pedido, portabilidade e revogação de consentimento. Basta chamar no WhatsApp <strong>(47) 99760-5014</strong>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="wrap">kr.IArt — música personalizada com IA e curadoria real · <a href="#form">Criar música</a></div>
+  <div class="wrap">kr.IArt — música personalizada com IA e curadoria real · <a href="#form">Criar música</a> · <a href="#privacidade">Privacidade</a></div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -1217,10 +1263,27 @@
 
   document.querySelectorAll('.cel-video').forEach(v => {
     v.addEventListener('error', () => {
-      v.style.display = 'none';
-      if(v.nextElementSibling) v.nextElementSibling.style.display = 'flex';
+      const wrap = v.closest('.cel-video-wrap') || v;
+      wrap.style.display = 'none';
+      if(wrap.nextElementSibling) wrap.nextElementSibling.style.display = 'flex';
     });
   });
+
+  // ── Play manual do miniclipe (com áudio) ──
+  const miniVideo = document.getElementById('miniclipeVideo');
+  const miniBtn = document.getElementById('miniclipePlayBtn');
+  if(miniVideo && miniBtn){
+    miniBtn.addEventListener('click', () => {
+      miniVideo.muted = false;
+      miniVideo.play();
+      miniBtn.classList.add('hidden');
+    });
+    miniVideo.addEventListener('pause', () => { miniBtn.classList.remove('hidden'); });
+    miniVideo.addEventListener('ended', () => { miniBtn.classList.remove('hidden'); });
+    miniVideo.addEventListener('click', () => {
+      if(!miniVideo.paused) miniVideo.pause();
+    });
+  }
 
   // ── Players reais dos exemplos ──
   function fmtTime(s){
