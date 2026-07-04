@@ -800,6 +800,13 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
             <textarea id="fObservacoes" class="f-textarea" placeholder="Referência de músicas que ela ama, instrumentos favoritos, algo sobre a voz, qualquer coisa que ajude a criar o presente perfeito."></textarea>
           </div>
           <div class="field-g">
+            <div class="f-label">Forma de pagamento</div>
+            <div class="chips" data-group="metodo-pagamento" data-single="true">
+              <span class="chip on" data-value="pix">Pix</span>
+              <span class="chip" data-value="cartao">Cartão de crédito</span>
+            </div>
+          </div>
+          <div class="field-g">
             <div class="f-label">Resumo do seu pedido</div>
             <div class="summary-box" id="summaryBox">
               <div class="s-row"><span class="s-key">Relação</span><span id="sRelacao">—</span></div>
@@ -816,6 +823,13 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
             <p style="font-weight:800;margin-bottom:10px;">Pix gerado! Escaneie ou copie o código:</p>
             <img id="pixQrImg" style="max-width:220px;margin:0 auto 10px;display:block;">
             <textarea id="pixCopiaCola" readonly style="width:100%;min-height:70px;font-size:0.72rem;font-family:monospace;padding:8px;"></textarea>
+          </div>
+          <div id="cardBrickContainer" style="display:none;margin-top:20px;"></div>
+          <div id="cartaoAprovado" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
+            <p style="font-weight:800;">✓ Pagamento aprovado! Seu pedido já está na fila de produção.</p>
+          </div>
+          <div id="cartaoPendente" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
+            <p style="font-weight:800;">Pagamento em análise. Você recebe a confirmação assim que for aprovado.</p>
           </div>
         </div>
 
@@ -934,7 +948,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         </div>
       </div>
     </div>
-    <p class="price-note">Pagamento via Pix. Pedido entra na produção após confirmação do pagamento.</p>
+    <p class="price-note">Pagamento via Pix ou cartão de crédito. Pedido entra na produção após confirmação do pagamento.</p>
   </div>
 </section>
 
@@ -969,7 +983,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       </details>
       <details class="faq-item">
         <summary>Como é feito o pagamento? <span class="plus">+</span></summary>
-        <p>Exclusivamente via Pix. Após o envio do formulário, você recebe a chave para pagamento. O pedido entra na produção após a confirmação.</p>
+        <p>Via Pix ou cartão de crédito, direto no site. Após o envio do formulário, você escolhe a forma de pagamento — no Pix, recebe o QR code na hora; no cartão, o pagamento é processado ali mesmo. O pedido entra na produção após a confirmação.</p>
       </details>
     </div>
   </div>
@@ -1025,6 +1039,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 (function(){
   const SUPABASE_URL = "https://txmkhulfgpkivcugggzf.supabase.co";
@@ -1232,6 +1247,16 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       if(insertErr) throw new Error('Falha ao salvar pedido: ' + insertErr.message);
 
       const contato = entrega === 'email' ? pedido.email : pedido.whatsapp;
+      const metodoPagamento = chipValue('metodo-pagamento') || 'pix';
+
+      if(metodoPagamento === 'cartao'){
+        nextBtn.style.display = 'none';
+        backBtn.style.display = 'none';
+        document.getElementById('cardBrickContainer').style.display = 'block';
+        await montarCardBrick(pedidoId, pedido.nome_pessoa, entrega, contato, valor);
+        enviando = false;
+        return;
+      }
 
       const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
         method: 'POST',
@@ -1265,6 +1290,68 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       nextBtn.textContent = '✓ Ir para pagamento';
     } finally {
       enviando = false;
+    }
+  }
+
+  let cardBrickController = null;
+  async function montarCardBrick(pedidoId, nomeCliente, entrega, contato, valor){
+    try {
+      const mp = new MercadoPago('APP_USR-af110a67-2e22-4878-b095-12d61b78c86a', { locale: 'pt-BR' });
+      const bricksBuilder = mp.bricks();
+      if(cardBrickController){ await cardBrickController.unmount(); }
+      cardBrickController = await bricksBuilder.create('cardPayment', 'cardBrickContainer', {
+        initialization: { amount: valor },
+        customization: {
+          visual: { style: { theme: 'bootstrap' } },
+        },
+        callbacks: {
+          onReady: () => {},
+          onError: (error) => {
+            console.error('Erro no Brick de cartão:', error);
+            showErro('Erro no formulário de cartão. Verifique os dados e tente novamente.');
+          },
+          onSubmit: (cardFormData) => {
+            return new Promise(async (resolve, reject) => {
+              try {
+                const pagamentoRes = await fetch(`${SUPABASE_URL}/functions/v1/criar-pagamento-kriart`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    pedidoId,
+                    nomeCliente,
+                    metodoEntrega: entrega,
+                    contato,
+                    paymentData: cardFormData,
+                  }),
+                });
+                const pagamentoData = await pagamentoRes.json();
+                if(!pagamentoRes.ok) throw new Error(pagamentoData.error || 'Erro ao processar o pagamento.');
+
+                if(pagamentoData.status === 'approved'){
+                  document.getElementById('cardBrickContainer').style.display = 'none';
+                  const ok = document.getElementById('cartaoAprovado');
+                  ok.style.display = 'block';
+                  ok.scrollIntoView({behavior:'smooth', block:'center'});
+                } else if(pagamentoData.status === 'in_process' || pagamentoData.status === 'pending'){
+                  document.getElementById('cardBrickContainer').style.display = 'none';
+                  const pend = document.getElementById('cartaoPendente');
+                  pend.style.display = 'block';
+                  pend.scrollIntoView({behavior:'smooth', block:'center'});
+                } else {
+                  throw new Error('Pagamento recusado (' + (pagamentoData.status_detail || pagamentoData.status) + '). Tente outro cartão.');
+                }
+                resolve();
+              } catch (err) {
+                showErro(err.message || 'Erro ao processar pagamento com cartão.');
+                reject();
+              }
+            });
+          },
+        },
+      });
+    } catch (err) {
+      console.error('Erro ao montar Brick:', err);
+      showErro('Não foi possível carregar o formulário de cartão. Tente novamente ou use Pix.');
     }
   }
 
