@@ -823,6 +823,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
             <p style="font-weight:800;margin-bottom:10px;">Pix gerado! Escaneie ou copie o código:</p>
             <img id="pixQrImg" style="max-width:220px;margin:0 auto 10px;display:block;">
             <textarea id="pixCopiaCola" readonly style="width:100%;min-height:70px;font-size:0.72rem;font-family:monospace;padding:8px;"></textarea>
+            <p id="pixAguardando" style="margin-top:12px;font-size:0.8rem;font-weight:700;opacity:0.7;">⏳ Aguardando confirmação do pagamento...</p>
           </div>
           <div id="cardBrickContainer" style="display:none;margin-top:20px;"></div>
           <div id="cartaoAprovado" style="display:none;margin-top:20px;padding:20px;border:2px solid var(--ink);border-radius:8px;background:var(--paper-3);text-align:center;">
@@ -1279,6 +1280,7 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
         resultBox.scrollIntoView({behavior:'smooth', block:'center'});
         nextBtn.style.display = 'none';
         backBtn.style.display = 'none';
+        iniciarPollingPix(pedidoId);
       } else {
         throw new Error('Pagamento criado mas o QR code do Pix não veio na resposta.');
       }
@@ -1353,6 +1355,38 @@ src="https://www.facebook.com/tr?id=1535657421687710&ev=PageView&noscript=1"
       console.error('Erro ao montar Brick:', err);
       showErro('Não foi possível carregar o formulário de cartão. Tente novamente ou use Pix.');
     }
+  }
+
+  let pixPollingInterval = null;
+  function iniciarPollingPix(pedidoId){
+    if(pixPollingInterval) clearInterval(pixPollingInterval);
+    let tentativas = 0;
+    const MAX_TENTATIVAS = 240; // 240 x 5s = 20 minutos
+    pixPollingInterval = setInterval(async () => {
+      tentativas++;
+      if(tentativas > MAX_TENTATIVAS){
+        clearInterval(pixPollingInterval);
+        document.getElementById('pixAguardando').textContent = 'Ainda não recebemos a confirmação. Se você já pagou, chama no WhatsApp que confirmamos manualmente.';
+        return;
+      }
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/verificar-pagamento-kriart`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pedidoId }),
+        });
+        const data = await res.json();
+        if(data.status === 'approved'){
+          clearInterval(pixPollingInterval);
+          resultBox.style.display = 'none';
+          const ok = document.getElementById('cartaoAprovado');
+          ok.style.display = 'block';
+          ok.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      } catch(err){
+        console.error('Erro ao verificar pagamento Pix:', err);
+      }
+    }, 5000);
   }
 
   const els = document.querySelectorAll('.reveal');
